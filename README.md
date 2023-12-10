@@ -1,2 +1,0 @@
-# studysprint
-Pomodoro Mobile Application
