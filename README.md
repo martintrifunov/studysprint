@@ -10,7 +10,7 @@
 <a href="https://www.youtube.com/watch?v=xKGESzemfdw&ab_channel=Codevolution">How to install Android Emulator</a>
 
 
-<a href="https://www.youtube.com/watch?v=DloY4tyzKDA&ab_channel=Codevolution">How to install iPshone Simulator(Only If you're on MacOS)</a>
+<a href="https://www.youtube.com/watch?v=DloY4tyzKDA&ab_channel=Codevolution">How to install iPhone Simulator(Only If you're on MacOS)</a>
 
 Pull the project <br>
 

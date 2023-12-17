@@ -6,7 +6,8 @@ import Animated, {
   useSharedValue,
   withTiming,
   useAnimatedProps,
-  cancelAnimation
+  cancelAnimation,
+  Easing
 } from "react-native-reanimated";
 import TimerCountDown from "./src/components/TimerCountDown";
 import TimerToggleButton from "./src/components/TimerToggleButton";
@@ -26,15 +27,21 @@ export default function App() {
   const [timerInterval, setTimerInterval] = useState(null);
   const [isTimerRunning, setIsTimerRunning] = useState(false);
   const [timerMode, setTimerMode] = useState('Focus');
+  const [isPaused, setIsPaused] = useState(false);
 
   const startTimer = () => {
     setIsTimerRunning(true);
+
+    if(isPaused === false) {
+      setIsPaused(false);
+    }
     const timerID = setInterval(
       () => setTimerCount((prev) => prev - 1000),
       1000
     );
-
+    
     setTimerInterval(timerID);
+    progress.value = withTiming(1, { duration: timerCount, easing: Easing.linear });
   };
 
   const stopTimer = () => {
@@ -42,44 +49,36 @@ export default function App() {
       clearInterval(timerInterval);
     }
 
+    cancelAnimation(progress);
     setIsTimerRunning(false);
   };
 
-  useEffect(() => {
-    if(timerCount === 0) {
-      if(timerMode === 'Focus') {
-        setTimerMode('Break');
-        setTimerCount(BREAK_TIME_MINUTES);
-      }
-      else {
-        setTimerMode('Focus');
-        setTimerCount(FOCUS_TIME_MINUTES);    
-      }
-      cancelAnimation(progress);
-      stopTimer();
-      progress.value = 0;
-    }
-    // console.log(progress.value); IT WORKS BITCHEZZZZ 
-
-    if(isTimerRunning) {
-      if(timerMode === 'Focus') {
-        progress.value = withTiming(1, { duration:  FOCUS_TIME_MINUTES });
-      }
-      else if(timerMode === 'Break') {
-        progress.value = withTiming(1, { duration:  BREAK_TIME_MINUTES });
-      }
+  const changeMode = () => {
+    if(timerMode === 'Focus') {
+       
+      setTimerMode('Break');
+      setTimerCount(BREAK_TIME_MINUTES);
     }
     else {
-      cancelAnimation(progress);
-      progress.value = 0;
+      setTimerMode('Focus');
+      setTimerCount(FOCUS_TIME_MINUTES);
+      
     }
     
-   
-  }, [timerCount, progress]);
+    stopTimer();
+    progress.value = 0;
+  }
+
+  useEffect(() => {
+    if(timerCount === 0) {
+      changeMode();
+    }
+  }, [timerCount]);
 
   const animatedProps = useAnimatedProps(() => ({
-    strokeDashoffset: 0.1 - CIRCLE_LENGTH * progress.value,
+    strokeDashoffset: 1 - CIRCLE_LENGTH * progress.value,
   }));
+
   return (
     <View style={styles.container}>
       <TimerCountDown timerDate={new Date(timerCount)} />
@@ -104,7 +103,7 @@ export default function App() {
           strokeWidth={15}
           fill={"none"}
           strokeDasharray={CIRCLE_LENGTH}
-          strokeDashoffset={CIRCLE_LENGTH * 0.5}
+          strokeDashoffset={CIRCLE_LENGTH}
           animatedProps={animatedProps}
           strokeLinecap={"round"}
           rotation={-90}

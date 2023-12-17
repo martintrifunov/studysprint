@@ -6,7 +6,7 @@ const TimerToggleButton = ({isTimerRunning, stopTimer, startTimer}) => {
     <View>
       <Button
         title={isTimerRunning ? "Stop Timer" : "Start Timer"}
-        onPress={isTimerRunning ? stopTimer : startTimer}
+        onPress={isTimerRunning ? () => stopTimer(false) : () => startTimer()}
       />
     </View>
   );
