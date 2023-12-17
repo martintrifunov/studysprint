@@ -17,13 +17,7 @@ const styles = StyleSheet.create({
       fontSize: 50,
       color: "gray",
       bottom: 140,
-    },
-    sessionNumber: {
-      fontSize: 25,
-      bottom: 140,
-      color: "gray",
-    },
-    timerButton: {},
+    }
   });
 
 export default TimerCountDown;
