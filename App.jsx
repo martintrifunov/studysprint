@@ -1,6 +1,6 @@
 import { StatusBar } from "expo-status-bar";
 import React from "react";
-import Timer from "./src/components/Timer";
+import Timer from "./src/TimerBundle/components/Timer";
 import { StyleSheet, View } from "react-native";
 
 export default function App() {

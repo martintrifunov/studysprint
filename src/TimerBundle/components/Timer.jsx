@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Dimensions, StyleSheet, Text, View } from "react-native";
+import { Dimensions, StyleSheet, View } from "react-native";
 import {
   useSharedValue,
   withTiming,
@@ -15,7 +15,6 @@ const FOCUS_TIME_MINUTES = 0.2 * 60 * 1000;
 const BREAK_TIME_MINUTES = 0.1 * 60 * 1000;
 const { width, height } = Dimensions.get("window");
 
-//GONNA CLEAN UP THE CODE LATER DON'T MIND ME :)
 export default function Timer() {
   const progress = useSharedValue(0);
   const [timerCount, setTimerCount] = useState(FOCUS_TIME_MINUTES);
@@ -103,10 +102,5 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     width: "100%",
-  },
-  sessionNumber: {
-    fontSize: 15,
-    bottom: 140,
-    color: "#535353",
   },
 });
