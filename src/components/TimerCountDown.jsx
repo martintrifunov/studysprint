@@ -15,7 +15,7 @@ const TimerCountDown = ({timerDate}) => {
 const styles = StyleSheet.create({
     progressNumber: {
       fontSize: 50,
-      color: "gray",
+      color: "#535353",
       bottom: 140,
     }
   });

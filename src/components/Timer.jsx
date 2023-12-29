@@ -10,8 +10,10 @@ import Animated, {
 } from "react-native-reanimated";
 import TimerCountDown from "./TimerCountDown";
 import TimerToggleButton from "./TimerToggleButton";
+import TimerCycles from "./TimerCycles";
 
-const CIRCLE_COLOR = "#EE0F55";
+const CIRCLE_COLOR_FOCUS = "#60B3FF";
+const CIRCLE_COLOR_BREAK = "#77D368";
 const CIRCLE_LENGTH = 750;
 const CIRCLE_RADIUS = CIRCLE_LENGTH / (2 * Math.PI);
 const FOCUS_TIME_MINUTES = 0.2 * 60 * 1000;
@@ -26,6 +28,8 @@ export default function Timer() {
   const [timerInterval, setTimerInterval] = useState(null);
   const [isTimerRunning, setIsTimerRunning] = useState(false);
   const [timerMode, setTimerMode] = useState("Focus");
+  const [focusCounter, setFocusCounter] = useState(1);
+  const [breakCounter, setBreakCounter] = useState(1);
 
   const startTimer = () => {
     setIsTimerRunning(true);
@@ -55,9 +59,11 @@ export default function Timer() {
     if (timerMode === "Focus") {
       setTimerMode("Break");
       setTimerCount(BREAK_TIME_MINUTES);
+      setFocusCounter(focusCounter + 1);
     } else {
       setTimerMode("Focus");
       setTimerCount(FOCUS_TIME_MINUTES);
+      setBreakCounter(breakCounter + 1);
     }
 
     stopTimer();
@@ -76,28 +82,32 @@ export default function Timer() {
 
   return (
     <View style={styles.container}>
-      <TimerCountDown timerDate={new Date(timerCount)} />
-      <Text style={styles.sessionNumber}>
-        {timerMode === "Focus" ? "1/5 Sessions" : "1/5 Breaks"}
-      </Text>
       <SVG style={{ position: "absolute", bottom: 150 }}>
+        <Circle
+          cx={width / 2}
+          cy={height / 2}
+          r={CIRCLE_RADIUS + 15}
+          fill={"white"}
+          style={styles.circle}
+        />
         {/* BACKGROUND CIRCLE */}
         <Circle
           cx={width / 2}
           cy={height / 2}
           r={CIRCLE_RADIUS}
-          stroke={CIRCLE_COLOR}
-          strokeWidth={15}
+          stroke={timerMode === "Focus" ? CIRCLE_COLOR_FOCUS : CIRCLE_COLOR_BREAK}
+          strokeWidth={10}
           fill={"none"}
           opacity={0.2}
+          
         />
         {/* FOREGROUND CIRCLE */}
         <AnimatedRing
           cx={width / 2}
           cy={height / 2}
           r={CIRCLE_RADIUS}
-          stroke={CIRCLE_COLOR}
-          strokeWidth={15}
+          stroke={timerMode === "Focus" ? CIRCLE_COLOR_FOCUS : CIRCLE_COLOR_BREAK}
+          strokeWidth={10}
           fill={"none"}
           strokeDasharray={CIRCLE_LENGTH}
           strokeDashoffset={CIRCLE_LENGTH}
@@ -108,6 +118,9 @@ export default function Timer() {
           originY={height / 2}
         />
       </SVG>
+
+      <TimerCycles timerMode={timerMode} focusCounter={focusCounter} breakCounter={breakCounter} />
+      <TimerCountDown timerDate={new Date(timerCount)} />
 
       <TimerToggleButton
         isTimerRunning={isTimerRunning}
@@ -121,13 +134,24 @@ export default function Timer() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: "#E9E9E9",
     justifyContent: "center",
     alignItems: "center",
+    width: "100%",
   },
   sessionNumber: {
-    fontSize: 25,
+    fontSize: 15,
     bottom: 140,
-    color: "gray",
+    color: "#535353",
+  },
+  circle: {
+    shadowColor: "#333333",
+    shadowOffset: {
+      width: 6,
+      height: 6,
+    },
+    shadowOpacity: 0.6,
+    shadowRadius: 4,
+    elevation: 5
   }
 });
