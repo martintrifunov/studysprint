@@ -23,3 +23,15 @@ Run the commands:
 When the project starts press 'a' or 'i' to run the project on your emulator/simulator.
 
 Pres 'r' to reload.
+
+## Development Guide
+
+### Make sure to follow a modular driven design
+
+Follow the TimerBundle as an example.
+
+- Step 1. Create a bundle directory with your assets/components/configs/pages subdirectories
+
+- Step 2. Make every feature/function as modular and reusable as possible
+
+- Step 3. Link them to the main App.jsx (Will implement routing later and will update this README guide for better module integration)
