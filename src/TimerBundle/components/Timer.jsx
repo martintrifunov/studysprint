@@ -10,6 +10,7 @@ import TimerCountDown from "./TimerCountDown";
 import TimerToggleButton from "./TimerToggleButton";
 import TimerCycles from "./TimerCycles";
 import TimerCircle from "./TimerCircle";
+import TimerSessionBlock from "./TimerSessionBlock";
 
 const FOCUS_TIME_MINUTES = 0.2 * 60 * 1000;
 const BREAK_TIME_MINUTES = 0.1 * 60 * 1000;
@@ -84,6 +85,11 @@ export default function Timer() {
         breakCounter={breakCounter}
       />
       <TimerCountDown timerDate={new Date(timerCount)} />
+
+      <TimerSessionBlock
+        isTimerRunning={isTimerRunning}
+        timerMode={timerMode}
+      />
 
       <TimerToggleButton
         isTimerRunning={isTimerRunning}

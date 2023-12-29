@@ -16,7 +16,7 @@ const TimerCycles = ({ timerMode, focusCounter, breakCounter }) => {
 const styles = StyleSheet.create({
   sessionNumber: {
     fontSize: 15,
-    bottom: 140,
+    bottom: 70,
     color: "#535353",
   },
 });

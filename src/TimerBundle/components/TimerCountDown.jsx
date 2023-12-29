@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
     progressNumber: {
       fontSize: 50,
       color: "#535353",
-      bottom: 140,
+      bottom: 70,
     }
   });
 
