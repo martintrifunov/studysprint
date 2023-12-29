@@ -126,6 +126,7 @@ export default function Timer() {
         isTimerRunning={isTimerRunning}
         startTimer={startTimer}
         stopTimer={stopTimer}
+        timerMode={timerMode}
       />
     </View>
   );
