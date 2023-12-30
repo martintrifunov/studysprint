@@ -15,7 +15,7 @@ const TimerCircle = ({ width, height, timerMode, progress }) => {
     strokeDashoffset: 1 - CIRCLE_LENGTH * progress.value,
   }));
   return (
-    <SVG style={{ position: "absolute", bottom: 150 }}>
+    <SVG style={{ position: "absolute", bottom: 175 }}>
       <Circle
         cx={width / 2}
         cy={height / 2}

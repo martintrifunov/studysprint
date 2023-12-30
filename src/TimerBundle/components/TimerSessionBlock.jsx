@@ -37,12 +37,12 @@ const styles = StyleSheet.create({
   blockContainer: {
     backgroundColor: "white",
     width: 240,
-    height: 150,
+    height: 175,
     borderRadius: 40,
     justifyContent: "center",
     alignItems: "center",
     elevation: 5,
-    top: 75,
+    top: 60,
   },
   textStyle: {
     fontSize: 13,

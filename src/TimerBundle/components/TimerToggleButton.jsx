@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     elevation: 5,
-    top: 120,
+    top: 100,
   },
   buttonContainerBreak: {
     backgroundColor: "#77D368",
@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     elevation: 5,
-    top: 120,
+    top: 100,
   },
   buttonContainerStop: {
     backgroundColor: "#D36868",
@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     elevation: 5,
-    top: 120,
+    top: 100,
   },
   buttonText: {
     color: "white",
