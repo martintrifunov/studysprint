@@ -28,10 +28,10 @@ Pres 'r' to reload.
 
 ### Make sure to follow a modular driven design
 
-Follow the TimerBundle as an example.
+Follow the other bundles as an example.
 
 - Step 1. Create a bundle directory with your assets/components/configs/pages subdirectories
 
 - Step 2. Make every feature/function as modular and reusable as possible
 
-- Step 3. Link them to the main App.jsx (Will implement routing later and will update this README guide for better module integration)
+- Step 3. Link them to the main app for navigation
