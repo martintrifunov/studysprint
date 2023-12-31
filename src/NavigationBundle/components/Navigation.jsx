@@ -1,15 +1,29 @@
 import React from "react";
-import { View, StyleSheet } from "react-native";
-import AntDesign from '@expo/vector-icons/AntDesign';
-import { FontAwesome5 } from '@expo/vector-icons';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { View, StyleSheet, TouchableOpacity } from "react-native";
+import AntDesign from "@expo/vector-icons/AntDesign";
+import { FontAwesome5 } from "@expo/vector-icons";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
 
 const Navigation = () => {
+  const navigation = useNavigation();
+
   return (
     <View style={styles.pillContainer}>
-      <MaterialCommunityIcons name="handshake-outline" size={24} color="black" />
-      <AntDesign name="home" size={25} color="black" />
-      <FontAwesome5 name="user" size={20} color="black" />
+      <TouchableOpacity onPress={() => navigation.navigate("Friends")}>
+        <MaterialCommunityIcons
+          name="handshake-outline"
+          size={24}
+          color="black"
+        />
+      </TouchableOpacity>
+      <TouchableOpacity onPress={() => navigation.navigate("Timer")}>
+        <AntDesign name="home" size={25} color="black" />
+      </TouchableOpacity>
+
+      <TouchableOpacity onPress={() => navigation.navigate("Profile")}>
+        <FontAwesome5 name="user" size={20} color="black" />
+      </TouchableOpacity>
     </View>
   );
 };
@@ -24,11 +38,11 @@ const styles = StyleSheet.create({
     borderRadius: 40,
     justifyContent: "space-between",
     alignItems: "center",
-    flexDirection: 'row',
+    flexDirection: "row",
     elevation: 5,
     bottom: 25,
     paddingRight: 40,
-    paddingLeft: 40
+    paddingLeft: 40,
   },
 });
 
