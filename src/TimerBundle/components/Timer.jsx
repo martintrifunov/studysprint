@@ -107,8 +107,8 @@ export default function Timer() {
     if (Number.isInteger(parseInt(tempCycleCount))) {
       setCycleCount(parseInt(tempCycleCount));
     }
+    timerSettingsBottomSheetModalRef.current?.snapToIndex(1);
 
-    timerSettingsBottomSheetModalRef.current?.close();
     Keyboard.dismiss();
   };
 
