@@ -89,6 +89,7 @@ const styles = StyleSheet.create({
   textStyle: {
     fontSize: 13,
     textAlign: "center",
+    color: "#535353"
   },
   iconStyle: {
     marginBottom: 15,
