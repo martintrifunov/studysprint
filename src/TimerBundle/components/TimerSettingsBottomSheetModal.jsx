@@ -1,6 +1,7 @@
 import { View, Text, StyleSheet } from "react-native";
-import React, { useCallback, useMemo, useRef, useState } from "react";
-import BottomSheet, {
+import React, { useCallback, useMemo } from "react";
+import {
+  BottomSheetModal,
   BottomSheetBackdrop,
   BottomSheetTextInput,
 } from "@gorhom/bottom-sheet";
@@ -15,8 +16,9 @@ const TimerSettingsBottomSheetModal = ({
   tempCycleCount,
   handleSettingsSave,
   inputValidation,
+  isSaveButtonVisible,
 }) => {
-  const snapPoints = useMemo(() => ["25%", "50%"], []);
+  const snapPoints = useMemo(() => ["50%"], []);
 
   const renderBackdrop = useCallback(
     (props) => (
@@ -30,51 +32,53 @@ const TimerSettingsBottomSheetModal = ({
   );
 
   return (
-    <BottomSheet
-      ref={timerSettingsBottomSheetModalRef}
-      snapPoints={snapPoints}
-      enablePanDownToClose={true}
-      index={-1}
-      backdropComponent={renderBackdrop}
-    >
-      <View>
-        <Text style={styles.textStyle}>
-          <MaterialCommunityIcons name="brain" size={16} color="#535353" />
-          Timer length (minutes):
-        </Text>
-        <BottomSheetTextInput
-          style={styles.input}
-          keyboardType="numeric"
-          onChangeText={(value) => inputValidation(value, "focus")}
-          value={tempFocusMinutes}
-        />
-        <Text style={styles.textStyle}>
-          <Ionicons name="leaf-outline" size={16} color="#535353" />
-          Break length (minutes):
-        </Text>
-        <BottomSheetTextInput
-          style={styles.input}
-          keyboardType="numeric"
-          onChangeText={(value) => inputValidation(value, "break")}
-          value={tempBreakMinutes}
-        />
-        <Text style={styles.textStyle}>
-          <Ionicons name="timer-outline" size={16} color="#535353" />
-          Number of cycles:
-        </Text>
-        <BottomSheetTextInput
-          style={styles.input}
-          keyboardType="numeric"
-          onChangeText={(value) => inputValidation(value, "cycle")}
-          value={tempCycleCount}
-        />
-        <TouchableOpacity onPress={handleSettingsSave}>
-          <View style={styles.buttonContainer}>
-            <Text style={styles.buttonText}>Save</Text>
-          </View>
-        </TouchableOpacity>
-      </View>
-    </BottomSheet>
+      <BottomSheetModal
+        ref={timerSettingsBottomSheetModalRef}
+        snapPoints={snapPoints}
+        enablePanDownToClose={true}
+        index={0}
+        backdropComponent={renderBackdrop}
+      >
+        <View>
+          <Text style={styles.textStyle}>
+            <MaterialCommunityIcons name="brain" size={16} color="#535353" />
+            Timer length (minutes):
+          </Text>
+          <BottomSheetTextInput
+            style={styles.input}
+            keyboardType="numeric"
+            onChangeText={(value) => inputValidation(value, "focus")}
+            value={tempFocusMinutes}
+          />
+          <Text style={styles.textStyle}>
+            <Ionicons name="leaf-outline" size={16} color="#535353" />
+            Break length (minutes):
+          </Text>
+          <BottomSheetTextInput
+            style={styles.input}
+            keyboardType="numeric"
+            onChangeText={(value) => inputValidation(value, "break")}
+            value={tempBreakMinutes}
+          />
+          <Text style={styles.textStyle}>
+            <Ionicons name="timer-outline" size={16} color="#535353" />
+            Number of cycles:
+          </Text>
+          <BottomSheetTextInput
+            style={styles.input}
+            keyboardType="numeric"
+            onChangeText={(value) => inputValidation(value, "cycle")}
+            value={tempCycleCount}
+          />
+          {isSaveButtonVisible && (
+            <TouchableOpacity onPress={handleSettingsSave}>
+              <View style={styles.buttonContainer}>
+                <Text style={styles.buttonText}>Save</Text>
+              </View>
+            </TouchableOpacity>
+          )}
+        </View>
+      </BottomSheetModal>
   );
 };
 

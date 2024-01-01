@@ -17,18 +17,19 @@ const { width, height } = Dimensions.get("window");
 export default function Timer() {
   const [focusMinutes, setFocusMinutes] = useState(12000);
   const [breakMinutes, setBreakMinutes] = useState(6000);
-  const progress = useSharedValue(0);
   const [timerCount, setTimerCount] = useState(focusMinutes);
   const [timerInterval, setTimerInterval] = useState(null);
   const [isTimerRunning, setIsTimerRunning] = useState(false);
   const [timerMode, setTimerMode] = useState("Focus");
   const [focusCounter, setFocusCounter] = useState(1);
   const [breakCounter, setBreakCounter] = useState(1);
-  const timerSettingsBottomSheetModalRef = useRef(null);
   const [cycleCount, setCycleCount] = useState(5);
   const [tempFocusMinutes, setTempFocusMinutes] = useState("");
   const [tempBreakMinutes, setTempBreakMinutes] = useState("");
   const [tempCycleCount, setTempCycleCount] = useState("");
+  const [isSaveButtonVisible, setIsSaveButtonVisible] = useState(false);
+  const timerSettingsBottomSheetModalRef = useRef(null);
+  const progress = useSharedValue(0);
 
   const startTimer = () => {
     setIsTimerRunning(true);
@@ -71,6 +72,7 @@ export default function Timer() {
 
   const inputValidation = (text, type) => {
     if (+text || text == "") {
+      setIsSaveButtonVisible(true);
       switch (type) {
         case "focus":
           setTempFocusMinutes(text);
@@ -107,8 +109,9 @@ export default function Timer() {
     if (Number.isInteger(parseInt(tempCycleCount))) {
       setCycleCount(parseInt(tempCycleCount));
     }
-    timerSettingsBottomSheetModalRef.current?.snapToIndex(1);
 
+    setIsSaveButtonVisible(false);
+    timerSettingsBottomSheetModalRef.current?.snapToIndex(0);
     Keyboard.dismiss();
   };
 
@@ -133,6 +136,7 @@ export default function Timer() {
         breakCounter={breakCounter}
         cycleCount={cycleCount}
       />
+
       <TimerCountDown
         timerDate={new Date(timerCount)}
         timerSettingsBottomSheetModalRef={timerSettingsBottomSheetModalRef}
@@ -160,6 +164,7 @@ export default function Timer() {
         tempCycleCount={tempCycleCount}
         inputValidation={inputValidation}
         handleSettingsSave={handleSettingsSave}
+        isSaveButtonVisible={isSaveButtonVisible}
       />
     </View>
   );

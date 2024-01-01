@@ -8,6 +8,9 @@ import Profile from "./src/ProfileBundle/components/Profile";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { NavigationContainer } from "@react-navigation/native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import {
+  BottomSheetModalProvider,
+} from "@gorhom/bottom-sheet";
 
 const Stack = createNativeStackNavigator();
 
@@ -15,18 +18,20 @@ export default function App() {
   return (
     <GestureHandlerRootView style={styles.appContainer}>
       <NavigationContainer>
-        <Stack.Navigator
-          screenOptions={{ headerShown: false }}
-          initialRouteName="Timer"
-        >
-          <Stack.Screen name="Friends" component={Friends} />
-          <Stack.Screen name="Timer" component={Timer} />
-          <Stack.Screen name="Profile" component={Profile} />
-        </Stack.Navigator>
-        <View style={styles.navContainer}>
-          <Navigation />
-        </View>
-        <StatusBar style="auto" />
+        <BottomSheetModalProvider>
+          <Stack.Navigator
+            screenOptions={{ headerShown: false }}
+            initialRouteName="Timer"
+          >
+            <Stack.Screen name="Friends" component={Friends} />
+            <Stack.Screen name="Timer" component={Timer} />
+            <Stack.Screen name="Profile" component={Profile} />
+          </Stack.Navigator>
+          <View style={styles.navContainer}>
+            <Navigation />
+          </View>
+          <StatusBar style="auto" />
+        </BottomSheetModalProvider>
       </NavigationContainer>
     </GestureHandlerRootView>
   );

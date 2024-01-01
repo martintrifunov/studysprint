@@ -6,7 +6,7 @@ const TimerCountDown = ({ timerDate, timerSettingsBottomSheetModalRef }) => {
     <View>
       <Text
         style={styles.progressNumber}
-        onPress={() => timerSettingsBottomSheetModalRef.current?.expand()}
+        onPress={() => timerSettingsBottomSheetModalRef.current?.present()}
       >
         {timerDate.getMinutes().toString().padStart(2, "0")}:
         {timerDate.getSeconds().toString().padStart(2, "0")}
