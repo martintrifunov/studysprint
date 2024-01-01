@@ -16,19 +16,19 @@ const FriendsList = ({ name, session }) => {
       {session === true ? (
         <View style={styles.buttonBlock}>
           <TouchableOpacity style={styles.iconStyle}>
-            <AntDesign name="rightcircle" size={24} color="#60B3FF" />
+            <AntDesign name="rightcircle" size={25} color="#60B3FF" />
           </TouchableOpacity>
           <TouchableOpacity style={styles.iconStyle} disabled={true}>
-            <AntDesign name="pluscircle" size={24} color="#919090" />
+            <AntDesign name="pluscircle" size={25} color="#bdbdbd" />
           </TouchableOpacity>
         </View>
       ) : (
         <View style={styles.buttonBlock}>
           <TouchableOpacity style={styles.iconStyle} disabled={true}>
-            <AntDesign name="rightcircle" size={24} color="#919090" />
+            <AntDesign name="rightcircle" size={25} color="#bdbdbd" />
           </TouchableOpacity>
           <TouchableOpacity style={styles.iconStyle}>
-            <AntDesign name="pluscircle" size={24} color="#60B3FF" />
+            <AntDesign name="pluscircle" size={25} color="#60B3FF" />
           </TouchableOpacity>
         </View>
       )}
@@ -44,7 +44,9 @@ const styles = StyleSheet.create({
   },
   buttonBlock: {
     display: "flex",
-    flexDirection: "row"
+    flexDirection: "row",
+    width: "36%",
+    justifyContent: "flex-end"
   },
   nameStyle: {
     marginLeft: 20,

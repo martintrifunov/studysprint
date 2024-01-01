@@ -5,9 +5,10 @@ import {
   TouchableOpacity,
   ScrollView,
 } from "react-native";
-import React from "react";
+import React, { useRef } from "react";
 import FriendsList from "./FriendsList";
 import { LinearGradient } from "expo-linear-gradient";
+import FriendsAddFriendBottomSheetModal from "./FriendsAddFriendBottomSheetModal";
 
 const Friends = () => {
   const friendsListDataFixture = [
@@ -21,12 +22,16 @@ const Friends = () => {
     { name: "Jane Doe", session: false },
     { name: "Jane Doe", session: false },
   ];
+  const userFriendCode = "#372AB@";
+  const addFriendBottomSheetModalRef = useRef(null);
 
   return (
     <View style={styles.blockContainer}>
       <View style={styles.blockHeader}>
-        <Text style={styles.headerText}>Friends List:</Text>
-        <TouchableOpacity onPress={() => console.log("yay friends! <3")}>
+        <Text style={styles.headerText}>Friends</Text>
+        <TouchableOpacity
+          onPress={() => addFriendBottomSheetModalRef.current?.present()}
+        >
           <View style={styles.buttonContainer}>
             <Text style={styles.buttonText}>Add Friends +</Text>
           </View>
@@ -48,6 +53,10 @@ const Friends = () => {
           pointerEvents={"none"}
         />
       </View>
+      <FriendsAddFriendBottomSheetModal
+        userFriendCode={userFriendCode}
+        addFriendBottomSheetModalRef={addFriendBottomSheetModalRef}
+      />
     </View>
   );
 };
@@ -86,7 +95,7 @@ const styles = StyleSheet.create({
   },
   headerText: {
     fontSize: 17,
-    color: "#535353"
+    color: "#535353",
   },
   buttonContainer: {
     backgroundColor: "#60B3FF",
@@ -101,9 +110,6 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: 12,
     textTransform: "uppercase",
-  },
-  iconStyle: {
-    marginBottom: 15,
   },
 });
 
