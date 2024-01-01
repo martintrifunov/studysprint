@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import React from "react";
 import { BarChart } from "react-native-chart-kit";
 
@@ -14,25 +14,34 @@ const ProfileStats = ({ data }) => {
     useShadowColorFromDataset: false,
   };
   return (
-    <BarChart
-      style={styles.graphSyle}
-      data={data}
-      width={330}
-      height={280}
-      chartConfig={chartConfig}
-      verticalLabelRotation={0}
-    />
+    <View>
+      <Text style={styles.statsHeaderText}>Past Sessions</Text>
+      <BarChart
+        style={styles.graphSyle}
+        data={data}
+        width={330}
+        height={250}
+        chartConfig={chartConfig}
+        verticalLabelRotation={0}
+      />
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
+  statsHeaderText: {
+    fontSize: 17,
+    color: "#535353",
+    marginLeft: 20,
+    marginTop: 20,
+  },
   graphSyle: {
     display: "flex",
     height: "100%",
     justifyContent: "center",
     alignItems: "center",
-    top: 15,
     borderRadius: 40,
+    bottom: 40,
   },
 });
 

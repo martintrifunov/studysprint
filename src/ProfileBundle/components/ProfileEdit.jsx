@@ -1,11 +1,14 @@
 import { View, StyleSheet } from "react-native";
 import React from "react";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 const ProfileEdit = () => {
   return (
     <View style={styles.userHeader}>
-      <MaterialCommunityIcons name="pencil" size={24} color="black" />
+      <TouchableOpacity>
+        <MaterialCommunityIcons name="pencil" size={24} color="black" />
+      </TouchableOpacity>
     </View>
   );
 };

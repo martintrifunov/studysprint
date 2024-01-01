@@ -10,9 +10,9 @@ const Profile = () => {
     labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
     datasets: [
       {
-        data: [1, 3, 10, 8, 4, 3, 7]
-      }
-    ]
+        data: [1, 3, 10, 8, 4, 3, 7],
+      },
+    ],
   };
   return (
     <View>
@@ -22,8 +22,9 @@ const Profile = () => {
         <ProfileStreaks />
       </View>
 
-      <View style={styles.statContainer}>
-        <ProfileStats data={data}/>
+      <View style={styles.statsContainer}>
+
+        <ProfileStats data={data} />
       </View>
     </View>
   );
@@ -42,7 +43,7 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "column",
   },
-  statContainer: {
+  statsContainer: {
     backgroundColor: "white",
     width: "90%",
     height: "45%",
@@ -54,6 +55,7 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "column",
   },
+
 });
 
 export default Profile;
