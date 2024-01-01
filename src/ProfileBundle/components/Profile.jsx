@@ -3,8 +3,17 @@ import React from "react";
 import ProfileEdit from "./ProfileEdit";
 import ProfileUser from "./ProfileUser";
 import ProfileStreaks from "./ProfileStreaks";
+import ProfileStats from "./ProfileStats";
 
 const Profile = () => {
+  const data = {
+    labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+    datasets: [
+      {
+        data: [1, 3, 10, 8, 4, 3, 7]
+      }
+    ]
+  };
   return (
     <View>
       <View style={styles.userContainer}>
@@ -13,7 +22,9 @@ const Profile = () => {
         <ProfileStreaks />
       </View>
 
-      <View style={styles.statContainer}></View>
+      <View style={styles.statContainer}>
+        <ProfileStats data={data}/>
+      </View>
     </View>
   );
 };
