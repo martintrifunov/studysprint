@@ -1,11 +1,5 @@
-import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
-import { Dimensions, StyleSheet, Text, View } from "react-native";
+import React, { useEffect, useRef, useState } from "react";
+import { Dimensions, StyleSheet, View, Keyboard } from "react-native";
 import {
   useSharedValue,
   withTiming,
@@ -17,16 +11,7 @@ import TimerToggleButton from "./TimerToggleButton";
 import TimerCycles from "./TimerCycles";
 import TimerCircle from "./TimerCircle";
 import TimerSessionBlock from "./TimerSessionBlock";
-import BottomSheet, {
-  BottomSheetBackdrop,
-  BottomSheetTextInput,
-} from "@gorhom/bottom-sheet";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { Ionicons } from "@expo/vector-icons";
-import { TouchableOpacity } from "react-native-gesture-handler";
-
-const FOCUS_TIME_MINUTES = 0.2 * 60 * 1000;
-const BREAK_TIME_MINUTES = 0.1 * 60 * 1000;
+import TimerSettingsBottomSheetModal from "./TimerSettingsBottomSheetModal";
 const { width, height } = Dimensions.get("window");
 
 export default function Timer() {
@@ -39,61 +24,11 @@ export default function Timer() {
   const [timerMode, setTimerMode] = useState("Focus");
   const [focusCounter, setFocusCounter] = useState(1);
   const [breakCounter, setBreakCounter] = useState(1);
-
-  const snapPoints = useMemo(() => ["25%", "50%"], []);
   const timerSettingsBottomSheetModalRef = useRef(null);
-  const renderBackdrop = useCallback(
-    (props) => (
-      <BottomSheetBackdrop
-        appearsOnIndex={0}
-        disappearsOnIndex={-1}
-        {...props}
-      />
-    ),
-    []
-  );
+  const [cycleCount, setCycleCount] = useState(5);
   const [tempFocusMinutes, setTempFocusMinutes] = useState("");
   const [tempBreakMinutes, setTempBreakMinutes] = useState("");
   const [tempCycleCount, setTempCycleCount] = useState("");
-
-  const [cycleCount, setCycleCount] = useState(5);
-
-  const inputValidation = (text, type) => {
-    if (+text || text == "") {
-      switch (type) {
-        case "focus":
-          setTempFocusMinutes(text);
-          break;
-        case "break":
-          setTempBreakMinutes(text);
-          break;
-        case "cycle":
-          setTempCycleCount(text);
-          break;
-        default:
-          break;
-      }
-    }
-  };
-
-  const handleSettingsSave = () => {   
-
-    //need to force re-render somehow
-    if (Number.isInteger(parseInt(tempFocusMinutes))) {
-      setFocusMinutes(parseInt(tempFocusMinutes) * 60 * 1000);
-      setTimerCount(focusMinutes);
-    }
-
-    if (Number.isInteger(parseInt(tempBreakMinutes))) {
-      setBreakMinutes(parseInt(tempBreakMinutes) * 60 * 1000);
-    }
-
-    if (Number.isInteger(parseInt(tempCycleCount))) {
-      setCycleCount(parseInt(tempCycleCount));
-    }
-    console.log(focusMinutes, timerCount)
-    // timerSettingsBottomSheetModalRef.current?.close();
-  };
 
   const startTimer = () => {
     setIsTimerRunning(true);
@@ -132,6 +67,49 @@ export default function Timer() {
 
     stopTimer();
     progress.value = 0;
+  };
+
+  const inputValidation = (text, type) => {
+    if (+text || text == "") {
+      switch (type) {
+        case "focus":
+          setTempFocusMinutes(text);
+          break;
+        case "break":
+          setTempBreakMinutes(text);
+          break;
+        case "cycle":
+          setTempCycleCount(text);
+          break;
+        default:
+          break;
+      }
+    }
+  };
+
+  const handleSettingsSave = () => {
+    if (Number.isInteger(parseInt(tempFocusMinutes))) {
+      setFocusMinutes(parseInt(tempFocusMinutes) * 60 * 1000);
+      if (timerMode === "Focus" && !isTimerRunning) {
+        setTimerCount(parseInt(tempFocusMinutes) * 60 * 1000);
+        progress.value = 0;
+      }
+    }
+
+    if (Number.isInteger(parseInt(tempBreakMinutes))) {
+      setBreakMinutes(parseInt(tempBreakMinutes) * 60 * 1000);
+      if (timerMode === "Break" && !isTimerRunning) {
+        setTimerCount(parseInt(tempBreakMinutes) * 60 * 1000);
+        progress.value = 0;
+      }
+    }
+
+    if (Number.isInteger(parseInt(tempCycleCount))) {
+      setCycleCount(parseInt(tempCycleCount));
+    }
+
+    timerSettingsBottomSheetModalRef.current?.close();
+    Keyboard.dismiss();
   };
 
   useEffect(() => {
@@ -174,51 +152,15 @@ export default function Timer() {
         stopTimer={stopTimer}
         timerMode={timerMode}
       />
-      <BottomSheet
-        ref={timerSettingsBottomSheetModalRef}
-        snapPoints={snapPoints}
-        enablePanDownToClose={true}
-        index={-1}
-        backdropComponent={renderBackdrop}
-      >
-        <View>
-          <Text style={styles.textStyle}>
-            <MaterialCommunityIcons name="brain" size={16} color="#535353" />
-            Timer length (minutes):
-          </Text>
-          <BottomSheetTextInput
-            style={styles.input}
-            keyboardType="numeric"
-            onChangeText={(value) => inputValidation(value, "focus")}
-            value={tempFocusMinutes}
-          />
-          <Text style={styles.textStyle}>
-            <Ionicons name="leaf-outline" size={16} color="#535353" />
-            Break length (minutes):
-          </Text>
-          <BottomSheetTextInput
-            style={styles.input}
-            keyboardType="numeric"
-            onChangeText={(value) => inputValidation(value, "break")}
-            value={tempBreakMinutes}
-          />
-          <Text style={styles.textStyle}>
-            <Ionicons name="timer-outline" size={16} color="#535353" />
-            Number of cycles:
-          </Text>
-          <BottomSheetTextInput
-            style={styles.input}
-            keyboardType="numeric"
-            onChangeText={(value) => inputValidation(value, "cycle")}
-            value={tempCycleCount}
-          />
-          <TouchableOpacity onPress={handleSettingsSave}>
-            <View style={styles.buttonContainer}>
-              <Text style={styles.buttonText}>Save</Text>
-            </View>
-          </TouchableOpacity>
-        </View>
-      </BottomSheet>
+
+      <TimerSettingsBottomSheetModal
+        timerSettingsBottomSheetModalRef={timerSettingsBottomSheetModalRef}
+        tempFocusMinutes={tempFocusMinutes}
+        tempBreakMinutes={tempBreakMinutes}
+        tempCycleCount={tempCycleCount}
+        inputValidation={inputValidation}
+        handleSettingsSave={handleSettingsSave}
+      />
     </View>
   );
 }
@@ -229,36 +171,5 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     width: "100%",
-  },
-  input: {
-    marginTop: 8,
-    marginBottom: 10,
-    borderRadius: 10,
-    fontSize: 16,
-    lineHeight: 20,
-    padding: 8,
-    marginLeft: 20,
-    marginRight: 20,
-    backgroundColor: "rgba(151, 151, 151, 0.25)",
-  },
-  textStyle: {
-    color: "#535353",
-    marginLeft: 20,
-  },
-  buttonContainer: {
-    backgroundColor: "#77D368",
-    width: "90%",
-    height: 40,
-    borderRadius: 10,
-    justifyContent: "center",
-    alignItems: "center",
-    marginLeft: "auto",
-    marginRight: "auto",
-    marginTop: 15
-  },
-  buttonText: {
-    color: "white",
-    fontSize: 17,
-    textTransform: "uppercase",
   },
 });
