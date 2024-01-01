@@ -1,4 +1,10 @@
-import { View, Text, StyleSheet, TouchableOpacity, Keyboard } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Keyboard,
+} from "react-native";
 import React, { useCallback, useMemo } from "react";
 import {
   BottomSheetModal,
@@ -27,7 +33,7 @@ const FriendsAddFriendBottomSheetModal = ({
   const handleAddFriend = () => {
     addFriendBottomSheetModalRef.current?.snapToIndex(0);
     Keyboard.dismiss();
-  }
+  };
 
   return (
     <BottomSheetModal
@@ -38,7 +44,8 @@ const FriendsAddFriendBottomSheetModal = ({
       backdropComponent={renderBackdrop}
     >
       <Text style={styles.yourFriendCodeStyle}>
-        Your friend code: {userFriendCode}
+        Your friend code:{" "}
+        <Text style={{ fontWeight: "bold" }}>{userFriendCode}</Text>
       </Text>
       <Text style={styles.textStyle}>
         <Entypo name="code" size={16} color="#535353" />
