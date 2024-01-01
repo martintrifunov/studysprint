@@ -3,10 +3,20 @@ import { View, StyleSheet, Text } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 
-const TimerSessionBlock = ({ isTimerRunning, timerMode }) => {
+const TimerSessionBlock = ({
+  isTimerRunning,
+  timerMode,
+  cycleCount,
+  focusCounter,
+  breakCounter,
+}) => {
   const [blockState, setBlockState] = useState(undefined);
-  const [remainingBreaks, setRemainingBreaks] = useState(0);
-  const [remainingSessions, setREmainingSessions] = useState(0);
+  const [remainingBreaks, setRemainingBreaks] = useState(
+    cycleCount - focusCounter + 1
+  );
+  const [remainingSessions, setRemainingSessions] = useState(
+    cycleCount - breakCounter + 1
+  );
   const [iconState, setIconState] = useState(false);
 
   const handleStateChange = () => {
@@ -25,6 +35,8 @@ const TimerSessionBlock = ({ isTimerRunning, timerMode }) => {
       }
       setIconState(false);
     }
+    setRemainingSessions(cycleCount - focusCounter + 1);
+    setRemainingBreaks(cycleCount - breakCounter + 1);
   };
 
   useEffect(() => {
@@ -33,8 +45,8 @@ const TimerSessionBlock = ({ isTimerRunning, timerMode }) => {
 
   return (
     <View style={styles.blockContainer}>
-      {iconState ?
-        (timerMode === "Focus" ? (
+      {iconState ? (
+        timerMode === "Focus" ? (
           <MaterialCommunityIcons
             name="brain"
             size={23}
@@ -48,7 +60,15 @@ const TimerSessionBlock = ({ isTimerRunning, timerMode }) => {
             color="green"
             style={styles.iconStyle}
           />
-        )) : <Ionicons name="timer-outline" size={24} color="black" style={styles.iconStyle}/>}
+        )
+      ) : (
+        <Ionicons
+          name="timer-outline"
+          size={24}
+          color="black"
+          style={styles.iconStyle}
+        />
+      )}
 
       <Text style={styles.textStyle}>{blockState}</Text>
     </View>
