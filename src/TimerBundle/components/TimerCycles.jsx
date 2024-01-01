@@ -1,15 +1,13 @@
 import React from "react";
-import { View, StyleSheet, Text } from "react-native";
+import { StyleSheet, Text } from "react-native";
 
 const TimerCycles = ({ timerMode, focusCounter, breakCounter, cycleCount }) => {
   return (
-    <View>
-      <Text style={styles.sessionNumber}>
-        {timerMode === "Focus"
-          ? `Work ${focusCounter}/${cycleCount}`
-          : `Breaks ${breakCounter}/${cycleCount}`}
-      </Text>
-    </View>
+    <Text style={styles.sessionNumber}>
+      {timerMode === "Focus"
+        ? `Work ${focusCounter}/${cycleCount}`
+        : `Breaks ${breakCounter}/${cycleCount}`}
+    </Text>
   );
 };
 
