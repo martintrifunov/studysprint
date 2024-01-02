@@ -5,6 +5,7 @@ import { StyleSheet, View } from "react-native";
 import Navigation from "./src/NavigationBundle/components/Navigation";
 import Friends from "./src/FriendsBundle/components/Friends";
 import Profile from "./src/ProfileBundle/components/Profile";
+import ProfileEdit from "./src/ProfileBundle/components/ProfileEdit";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { NavigationContainer } from "@react-navigation/native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
@@ -26,6 +27,7 @@ export default function App() {
             <Stack.Screen name="Friends" component={Friends} />
             <Stack.Screen name="Timer" component={Timer} />
             <Stack.Screen name="Profile" component={Profile} />
+            <Stack.Screen name="ProfileEdit" component={ProfileEdit} />
           </Stack.Navigator>
           <View style={styles.navContainer}>
             <Navigation />

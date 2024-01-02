@@ -1,6 +1,6 @@
 import { View, StyleSheet } from "react-native";
 import React from "react";
-import ProfileEdit from "./ProfileEdit";
+import ProfileEditButton from "./ProfileEditButton";
 import ProfileUser from "./ProfileUser";
 import ProfileStreaks from "./ProfileStreaks";
 import ProfileStats from "./ProfileStats";
@@ -17,13 +17,12 @@ const Profile = () => {
   return (
     <View>
       <View style={styles.userContainer}>
-        <ProfileEdit />
+        <ProfileEditButton />
         <ProfileUser />
         <ProfileStreaks />
       </View>
 
       <View style={styles.statsContainer}>
-
         <ProfileStats data={data} />
       </View>
     </View>
@@ -55,7 +54,6 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "column",
   },
-
 });
 
 export default Profile;
