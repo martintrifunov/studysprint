@@ -12,6 +12,8 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import {
   BottomSheetModalProvider,
 } from "@gorhom/bottom-sheet";
+import Login from "./src/AuthBundle/screens/Login";
+import SignUp from "./src/AuthBundle/screens/SignUp";
 
 const Stack = createNativeStackNavigator();
 
@@ -24,6 +26,8 @@ export default function App() {
             screenOptions={{ headerShown: false }}
             initialRouteName="Timer"
           >
+            <Stack.Screen name="SignUp" component={SignUp} />
+            <Stack.Screen name="Login" component={Login} />
             <Stack.Screen name="Friends" component={Friends} />
             <Stack.Screen name="Timer" component={Timer} />
             <Stack.Screen name="Profile" component={Profile} />

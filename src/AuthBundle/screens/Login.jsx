@@ -1,0 +1,126 @@
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  TextInput,
+  TouchableOpacity,
+} from "react-native";
+import { StatusBar } from "expo-status-bar";
+import React from "react";
+import { FontAwesome5 } from "@expo/vector-icons";
+import { Feather } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
+
+const Login = () => {
+    const navigation = useNavigation();
+  return (
+    <View style={styles.container}>
+      <Image
+        style={styles.image}
+        source={require("../assets/background.png")}
+      />
+      <Text style={styles.loginText}>StudySprint</Text>
+
+      <View style={styles.inputContainer}>
+        <TextInput style={styles.input} placeholder={`Username...`} />
+        <View style={styles.iconStyle}>
+          <FontAwesome5 name="user" size={18} color="black" />
+        </View>
+      </View>
+
+      <View style={styles.inputContainer}>
+        <TextInput
+          style={styles.input}
+          placeholder={`Password...`}
+          secureTextEntry={true}
+        />
+        <View style={styles.iconStyle}>
+          <Feather name="lock" size={18} color="black" />
+        </View>
+      </View>
+
+      <TouchableOpacity>
+        <View style={styles.buttonContainer}>
+          <Text style={styles.buttonText}>Login</Text>
+        </View>
+      </TouchableOpacity>
+      <View style={styles.redirectText}>
+        <Text>Don't have an account? </Text>
+        <TouchableOpacity onPress={() => navigation.navigate("SignUp")}><Text style={{color: "#38BDF8"}}>Sign up!</Text></TouchableOpacity>
+      </View>
+
+      <StatusBar style="light" />
+    </View>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    width: "100%",
+    height: "100%",
+    backgroundColor: "white",
+  },
+  image: {
+    position: "absolute",
+    height: "100%",
+    width: "100%",
+  },
+
+  loginText: {
+    color: "white",
+    fontSize: 40,
+    display: "flex",
+    height: "50%",
+    alignItems: "flex-start",
+    position: "absolute",
+  },
+  inputContainer: {
+    flexDirection: "row",
+    top: 125,
+  },
+  iconStyle: {
+    position: "absolute",
+    top: 20,
+    left: 15,
+  },
+  input: {
+    width: "70%",
+    marginTop: 8,
+    marginBottom: 10,
+    borderRadius: 40,
+    fontSize: 16,
+    lineHeight: 20,
+    paddingTop: 8,
+    paddingBottom: 8,
+    paddingLeft: 40,
+    paddingRight: 20,
+    backgroundColor: "white",
+    elevation: 5,
+  },
+  buttonContainer: {
+    backgroundColor: "#38BDF8",
+    width: 275,
+    height: 40,
+    borderRadius: 40,
+    justifyContent: "center",
+    alignItems: "center",
+    elevation: 5,
+    top: 132,
+  },
+  buttonText: {
+    color: "white",
+    fontSize: 17,
+    textTransform: "uppercase",
+  },
+  redirectText: {
+    display: "flex",
+    flexDirection: "row",
+    top: 150
+  }
+});
+
+export default Login;

@@ -10,8 +10,10 @@ import { FontAwesome } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
 
 const ProfileEdit = () => {
+  const navigation = useNavigation();
   return (
     <>
       <View style={styles.profileContainer}>
@@ -56,11 +58,11 @@ const ProfileEdit = () => {
           </View>
         </View>
 
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate("Login")}>
+          <View style={styles.buttonContainer}>
             <Text style={styles.buttonText}>Save</Text>
-          </TouchableOpacity>
-        </View>
+          </View>
+        </TouchableOpacity>
       </View>
     </>
   );
@@ -78,19 +80,20 @@ const styles = StyleSheet.create({
   profilePictureContainer: {
     position: "absolute",
     borderRadius: 100,
-    borderColor: 'white',
+    borderColor: "white",
     backgroundColor: "white",
     borderWidth: 3,
-    elevation: 5
+    elevation: 5,
+    top: 10
   },
   editPenContainer: {
     position: "absolute",
     left: 225,
-    bottom: 110,
+    bottom: 170,
     backgroundColor: "white",
     elevation: 6,
     borderRadius: 100,
-    padding: 4
+    padding: 4,
   },
   inputContainer: {
     flexDirection: "row",
@@ -116,16 +119,19 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   buttonContainer: {
-    position: "absolute",
-    top: 375,
+
     backgroundColor: "#60B3FF",
+    width: 275,
     height: 40,
-    width: "70%",
     borderRadius: 40,
+    display: "flex",
     justifyContent: "center",
     alignItems: "center",
     marginLeft: "auto",
     marginRight: "auto",
+    elevation: 5,
+    top: 182,
+
   },
   buttonText: {
     color: "white",
