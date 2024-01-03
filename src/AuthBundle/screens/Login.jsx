@@ -20,7 +20,8 @@ const Login = () => {
         style={styles.image}
         source={require("../assets/background.png")}
       />
-      <Text style={styles.loginText}>StudySprint</Text>
+      <Text style={styles.greetingsText}>Hi,</Text>
+      <Text style={styles.sloganText}>Welcome to StudySprint!</Text>
 
       <View style={styles.inputContainer}>
         <TextInput style={styles.input} placeholder={`Username...`} />
@@ -69,12 +70,22 @@ const styles = StyleSheet.create({
     height: "100%",
     width: "100%",
   },
-
-  loginText: {
+  greetingsText: {
+    color: "white",
+    fontSize: 30,
+    display: "flex",
+    height: "75%",
+    width: "100%",
+    alignItems: "flex-start",
+    justifyContent: "flex-start",
+    position: "absolute",
+    left: 85
+  },
+  sloganText: {
     color: "white",
     fontSize: 40,
     display: "flex",
-    height: "50%",
+    height: "65%",
     alignItems: "flex-start",
     position: "absolute",
   },
