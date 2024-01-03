@@ -16,7 +16,7 @@ const FriendsBlockBody = ({ friendsList }) => {
         ))}
       </ScrollView>
       <LinearGradient
-        style={{ position: "absolute", bottom: 0, width: "90%", height: 35 }}
+        style={{ position: "absolute", bottom: 0, width: "100%", height: 35 }}
         colors={["rgba(255, 255, 255, 0.1)", "rgba(255, 255, 255, 1)"]}
         pointerEvents={"none"}
       />
@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
       flexDirection: "column",
       justifyContent: "start",
       alignItems: "start",
-      width: "94.5%",
+      width: "94%",
       height: "83%",
       top: 50,
       left: 20,

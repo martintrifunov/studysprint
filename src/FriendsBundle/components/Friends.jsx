@@ -48,16 +48,6 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "column",
   },
-  blockBody: {
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "start",
-    alignItems: "start",
-    width: "94.5%",
-    height: "83%",
-    top: 50,
-    left: 20,
-  },
 });
 
 export default Friends;

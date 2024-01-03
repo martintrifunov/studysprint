@@ -1,8 +1,6 @@
 import React from "react";
 import SVG, { Circle } from "react-native-svg";
-import Animated, {
-  useAnimatedProps,
-} from "react-native-reanimated";
+import Animated, { useAnimatedProps } from "react-native-reanimated";
 
 const CIRCLE_COLOR_FOCUS = "#60B3FF";
 const CIRCLE_COLOR_BREAK = "#77D368";
@@ -22,6 +20,7 @@ const TimerCircle = ({ width, height, timerMode, progress }) => {
         r={CIRCLE_RADIUS + 15}
         fill={"white"}
       />
+
       {/* BACKGROUND CIRCLE */}
       <Circle
         cx={width / 2}

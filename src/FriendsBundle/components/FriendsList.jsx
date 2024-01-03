@@ -6,7 +6,11 @@ import { AntDesign } from "@expo/vector-icons";
 const FriendsList = ({ name, session }) => {
   return (
     <View style={styles.listContainer}>
-      <FontAwesome name="user-circle" size={60} color="black" />
+       <View style={styles.profilePictureContainer}>
+          <TouchableOpacity>
+            <FontAwesome name="user-circle" size={60} color="black" />
+          </TouchableOpacity>
+        </View>
       <View>
         <Text style={styles.nameStyle}>{name}</Text>
         <Text style={styles.sessionStyle}>
@@ -40,13 +44,21 @@ const styles = StyleSheet.create({
   listContainer: {
     display: "flex",
     flexDirection: "row",
-    marginBottom: 20,
+    marginBottom: 15,
+    width: "100%"
   },
   buttonBlock: {
     display: "flex",
     flexDirection: "row",
     width: "36%",
     justifyContent: "flex-end"
+  },
+  profilePictureContainer: {
+    borderRadius: 100,
+    borderColor: 'white',
+    backgroundColor: "white",
+    borderWidth: 3,
+    elevation: 3
   },
   nameStyle: {
     marginLeft: 20,
@@ -59,7 +71,8 @@ const styles = StyleSheet.create({
     color: "#535353"
   },
   iconStyle: {
-    marginLeft: 25,
+    marginLeft: 20,
+    marginRight: 3,
     marginTop: 13,
   },
 });
