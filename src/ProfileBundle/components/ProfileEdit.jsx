@@ -77,11 +77,20 @@ const styles = StyleSheet.create({
   },
   profilePictureContainer: {
     position: "absolute",
+    borderRadius: 100,
+    borderColor: 'white',
+    backgroundColor: "white",
+    borderWidth: 3,
+    elevation: 5
   },
   editPenContainer: {
     position: "absolute",
-    left: 245,
-    bottom: 125,
+    left: 225,
+    bottom: 110,
+    backgroundColor: "white",
+    elevation: 6,
+    borderRadius: 100,
+    padding: 4
   },
   inputContainer: {
     flexDirection: "row",
