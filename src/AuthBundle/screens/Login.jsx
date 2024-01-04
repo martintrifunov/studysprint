@@ -11,26 +11,48 @@ import React from "react";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import Animated, {
+  FadeIn,
+  FadeInDown,
+  FadeInUp,
+  FadeOut,
+} from "react-native-reanimated";
 
 const Login = () => {
-    const navigation = useNavigation();
+  const navigation = useNavigation();
   return (
     <View style={styles.container}>
       <Image
         style={styles.image}
         source={require("../assets/background.png")}
       />
-      <Text style={styles.greetingsText}>Hi,</Text>
-      <Text style={styles.sloganText}>Welcome to StudySprint!</Text>
+      <Animated.Text
+        entering={FadeInUp.delay(400).duration(1000).springify()}
+        style={styles.greetingsText}
+      >
+        Hi,
+      </Animated.Text>
+      <Animated.Text
+        entering={FadeInUp.delay(600).duration(1000).springify()}
+        style={styles.sloganText}
+      >
+        Welcome to StudySprint!
+      </Animated.Text>
 
-      <View style={styles.inputContainer}>
+      <Animated.View
+        entering={FadeInDown.delay(400).duration(1000).springify()}
+        style={styles.inputContainer}
+      >
         <TextInput style={styles.input} placeholder={`Username...`} />
         <View style={styles.iconStyle}>
           <FontAwesome5 name="user" size={18} color="black" />
         </View>
-      </View>
+      </Animated.View>
 
-      <View style={styles.inputContainer}>
+      <Animated.View
+        entering={FadeInDown.delay(600).duration(1000).springify()}
+        style={styles.inputContainer}
+      >
         <TextInput
           style={styles.input}
           placeholder={`Password...`}
@@ -39,17 +61,25 @@ const Login = () => {
         <View style={styles.iconStyle}>
           <Feather name="lock" size={18} color="black" />
         </View>
-      </View>
+      </Animated.View>
 
       <TouchableOpacity>
-        <View style={styles.buttonContainer}>
+        <Animated.View
+          entering={FadeInDown.delay(800).duration(1000).springify()}
+          style={styles.buttonContainer}
+        >
           <Text style={styles.buttonText}>Login</Text>
-        </View>
+        </Animated.View>
       </TouchableOpacity>
-      <View style={styles.redirectText}>
+      <Animated.View
+        entering={FadeInDown.delay(1000).duration(1000).springify()}
+        style={styles.redirectText}
+      >
         <Text>Don't have an account? </Text>
-        <TouchableOpacity onPress={() => navigation.navigate("SignUp")}><Text style={{color: "#38BDF8"}}>Sign up!</Text></TouchableOpacity>
-      </View>
+        <TouchableOpacity onPress={() => navigation.navigate("SignUp")}>
+          <Text style={{ color: "#38BDF8" }}>Sign up!</Text>
+        </TouchableOpacity>
+      </Animated.View>
 
       <StatusBar style="light" />
     </View>
@@ -79,7 +109,7 @@ const styles = StyleSheet.create({
     alignItems: "flex-start",
     justifyContent: "flex-start",
     position: "absolute",
-    left: 85
+    left: 85,
   },
   sloganText: {
     color: "white",
@@ -130,8 +160,8 @@ const styles = StyleSheet.create({
   redirectText: {
     display: "flex",
     flexDirection: "row",
-    top: 150
-  }
+    top: 150,
+  },
 });
 
 export default Login;
