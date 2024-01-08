@@ -18,16 +18,12 @@ const ProfileEdit = () => {
     <>
       <View style={styles.profileContainer}>
         <View style={styles.profilePictureContainer}>
-          <TouchableOpacity>
-            <FontAwesome name="user-circle" size={115} color="black" />
-          </TouchableOpacity>
+          <FontAwesome name="user-circle" size={115} color="black" />
         </View>
 
-        <View style={styles.editPenContainer}>
-          <TouchableOpacity>
-            <MaterialCommunityIcons name="pencil" size={24} color="black" />
-          </TouchableOpacity>
-        </View>
+        <TouchableOpacity style={styles.editPenContainer}>
+          <MaterialCommunityIcons name="pencil" size={24} color="black" />
+        </TouchableOpacity>
 
         <View style={styles.inputContainer}>
           <TextInput style={styles.input} placeholder={`Display Name...`} />
@@ -58,10 +54,11 @@ const ProfileEdit = () => {
           </View>
         </View>
 
-        <TouchableOpacity onPress={() => navigation.navigate("Login")}>
-          <View style={styles.buttonContainer}>
-            <Text style={styles.buttonText}>Save</Text>
-          </View>
+        <TouchableOpacity
+          style={styles.buttonContainer}
+          onPress={() => navigation.navigate("Login")}
+        >
+          <Text style={styles.buttonText}>Save</Text>
         </TouchableOpacity>
       </View>
     </>
@@ -84,7 +81,7 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     borderWidth: 3,
     elevation: 5,
-    top: 10
+    top: 10,
   },
   editPenContainer: {
     position: "absolute",
@@ -119,19 +116,16 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   buttonContainer: {
-
     backgroundColor: "#60B3FF",
     width: 275,
     height: 40,
     borderRadius: 40,
-    display: "flex",
     justifyContent: "center",
     alignItems: "center",
     marginLeft: "auto",
     marginRight: "auto",
     elevation: 5,
     top: 182,
-
   },
   buttonText: {
     color: "white",

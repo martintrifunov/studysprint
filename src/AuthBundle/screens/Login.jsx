@@ -63,14 +63,15 @@ const Login = () => {
         </View>
       </Animated.View>
 
-      <TouchableOpacity>
-        <Animated.View
-          entering={FadeInDown.delay(800).duration(1000).springify()}
-          style={styles.buttonContainer}
-        >
+      <Animated.View
+        entering={FadeInDown.delay(800).duration(1000).springify()}
+        style={styles.fixButtonFloat}
+      >
+        <TouchableOpacity style={styles.buttonContainer}>
           <Text style={styles.buttonText}>Login</Text>
-        </Animated.View>
-      </TouchableOpacity>
+        </TouchableOpacity>
+      </Animated.View>
+
       <Animated.View
         entering={FadeInDown.delay(1000).duration(1000).springify()}
         style={styles.redirectText}
@@ -150,6 +151,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     elevation: 5,
+  },
+  fixButtonFloat: {
     top: 132,
   },
   buttonText: {

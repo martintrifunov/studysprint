@@ -77,14 +77,15 @@ const SignUp = () => {
         </View>
       </Animated.View>
 
-      <TouchableOpacity>
-        <Animated.View
-          entering={FadeInDown.delay(1000).duration(1000).springify()}
-          style={styles.buttonContainer}
-        >
+      <Animated.View
+        entering={FadeInDown.delay(1000).duration(1000).springify()}
+        style={styles.fixFloat}
+      >
+        <TouchableOpacity style={styles.buttonContainer}>
           <Text style={styles.buttonText}>Sign up</Text>
-        </Animated.View>
-      </TouchableOpacity>
+        </TouchableOpacity>
+      </Animated.View>
+
       <Animated.View
         entering={FadeInDown.delay(1200).duration(1000).springify()}
         style={styles.redirectText}
@@ -164,6 +165,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     elevation: 5,
+  },
+  fixFloat: {
     top: 145,
   },
   buttonText: {
