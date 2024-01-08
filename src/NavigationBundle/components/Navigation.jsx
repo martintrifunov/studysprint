@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, StyleSheet, TouchableOpacity } from "react-native";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { FontAwesome5 } from "@expo/vector-icons";
@@ -6,23 +6,43 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 
 const Navigation = () => {
+  const [selectionBag, setSelectionBag] = useState({timer: true});
   const navigation = useNavigation();
+
+  const navigationHandler = (currentlySelectedTab) => {
+    switch (currentlySelectedTab) {
+      case "friends":
+        setSelectionBag({friends: true})
+        navigation.navigate("Friends")
+        break;
+      case "timer":
+        setSelectionBag({timer: true})
+        navigation.navigate("Timer")
+        break;
+      case "profile":
+        setSelectionBag({profile: true})
+        navigation.navigate("Profile")
+        break;
+      default:
+        break;
+    }
+  };
 
   return (
     <View style={styles.pillContainer}>
-      <TouchableOpacity onPress={() => navigation.navigate("Friends")}>
+      <TouchableOpacity onPress={() => navigationHandler("friends")}>
         <MaterialCommunityIcons
           name="handshake-outline"
           size={24}
-          color="black"
+          color={selectionBag?.friends === true ? "#60B3FF" : "black"}
         />
       </TouchableOpacity>
-      <TouchableOpacity onPress={() => navigation.navigate("Timer")}>
-        <AntDesign name="home" size={25} color="black" />
+      <TouchableOpacity onPress={() => navigationHandler("timer")}>
+        <AntDesign name="home" size={25} color={selectionBag?.timer === true ? "#60B3FF" : "black"} />
       </TouchableOpacity>
 
-      <TouchableOpacity onPress={() => navigation.navigate("Profile")}>
-        <FontAwesome5 name="user" size={20} color="black" />
+      <TouchableOpacity onPress={() => navigationHandler("profile")}>
+        <FontAwesome5 name="user" size={20} color={selectionBag?.profile === true ? "#60B3FF" : "black"} />
       </TouchableOpacity>
     </View>
   );

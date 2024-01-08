@@ -15,8 +15,8 @@ import TimerSettingsBottomSheetModal from "./TimerSettingsBottomSheetModal";
 const { width, height } = Dimensions.get("window");
 
 export default function Timer() {
-  const [focusMinutes, setFocusMinutes] = useState(12000);
-  const [breakMinutes, setBreakMinutes] = useState(6000);
+  const [focusMinutes, setFocusMinutes] = useState(1500000);
+  const [breakMinutes, setBreakMinutes] = useState(300000);
   const [timerCount, setTimerCount] = useState(focusMinutes);
   const [timerInterval, setTimerInterval] = useState(null);
   const [isTimerRunning, setIsTimerRunning] = useState(false);
