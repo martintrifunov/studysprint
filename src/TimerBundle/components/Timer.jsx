@@ -28,6 +28,7 @@ export default function Timer() {
   const [tempBreakMinutes, setTempBreakMinutes] = useState("");
   const [tempCycleCount, setTempCycleCount] = useState("");
   const [isSaveButtonVisible, setIsSaveButtonVisible] = useState(false);
+  const [errorBag, setErrorInErrorBag] = useState(null);
   const timerSettingsBottomSheetModalRef = useRef(null);
   const progress = useSharedValue(0);
 
@@ -75,14 +76,53 @@ export default function Timer() {
       setIsSaveButtonVisible(true);
       switch (type) {
         case "focus":
-          setTempFocusMinutes(text);
-          break;
+          if (parseInt(text) <= 60) {
+            setTempFocusMinutes(text);
+            setErrorInErrorBag({
+              ...errorBag,
+              timerLength: null,
+            });
+            break;
+          } else {
+            setTempFocusMinutes("");
+            setErrorInErrorBag({
+              ...errorBag,
+              timerLength: "Please enter a valid number from 1 to 60",
+            });
+            break;
+          }
         case "break":
-          setTempBreakMinutes(text);
-          break;
+          if (parseInt(text) <= 60) {
+            setTempBreakMinutes(text);
+            setErrorInErrorBag({
+              ...errorBag,
+              breakLength: null,
+            });
+            break;
+          } else {
+            setTempBreakMinutes("");
+            setErrorInErrorBag({
+              ...errorBag,
+              breakLength: "Please enter a valid number from 1 to 60",
+            });
+            break;
+          }
         case "cycle":
-          setTempCycleCount(text);
-          break;
+          if (parseInt(text) <= 100) {
+            setTempCycleCount(text);
+            setErrorInErrorBag({
+              ...errorBag,
+              cycleNumber: null,
+            });
+            break;
+          } else {
+            setTempCycleCount("");
+            setErrorInErrorBag({
+              ...errorBag,
+              cycleNumber: "Please enter a valid number from 1 to 100",
+            });
+            break;
+          }
         default:
           break;
       }
@@ -166,6 +206,7 @@ export default function Timer() {
         inputValidation={inputValidation}
         handleSettingsSave={handleSettingsSave}
         isSaveButtonVisible={isSaveButtonVisible}
+        errorBag={errorBag}
       />
     </View>
   );

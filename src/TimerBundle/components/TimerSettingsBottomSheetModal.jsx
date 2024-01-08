@@ -17,8 +17,9 @@ const TimerSettingsBottomSheetModal = ({
   handleSettingsSave,
   inputValidation,
   isSaveButtonVisible,
+  errorBag
 }) => {
-  const snapPoints = useMemo(() => ["50%"], []);
+  const snapPoints = useMemo(() => ["55%"], []);
 
   const renderBackdrop = useCallback(
     (props) => (
@@ -41,35 +42,38 @@ const TimerSettingsBottomSheetModal = ({
       >
         <View>
           <Text style={styles.textStyle}>
-            <MaterialCommunityIcons name="brain" size={16} color="#535353" />
+            <MaterialCommunityIcons name="brain" size={16} color="#535353" />{" "}
             Timer length (minutes):
           </Text>
           <BottomSheetTextInput
-            style={styles.input}
+            style={errorBag?.timerLength ? styles.inputError : styles.input}
             keyboardType="numeric"
             onChangeText={(value) => inputValidation(value, "focus")}
             value={tempFocusMinutes}
           />
+          {errorBag?.timerLength && <Text style={styles.errorStyle}>{errorBag.timerLength}</Text>}
           <Text style={styles.textStyle}>
-            <Ionicons name="leaf-outline" size={16} color="#535353" />
+            <Ionicons name="leaf-outline" size={16} color="#535353" />{" "}
             Break length (minutes):
           </Text>
           <BottomSheetTextInput
-            style={styles.input}
+            style={errorBag?.breakLength ? styles.inputError : styles.input}
             keyboardType="numeric"
             onChangeText={(value) => inputValidation(value, "break")}
             value={tempBreakMinutes}
           />
+          {errorBag?.breakLength && <Text style={styles.errorStyle}>{errorBag.breakLength}</Text>}
           <Text style={styles.textStyle}>
-            <Ionicons name="timer-outline" size={16} color="#535353" />
+            <Ionicons name="timer-outline" size={16} color="#535353" />{" "}
             Number of cycles:
           </Text>
           <BottomSheetTextInput
-            style={styles.input}
+            style={errorBag?.cycleNumber ? styles.inputError : styles.input}
             keyboardType="numeric"
             onChangeText={(value) => inputValidation(value, "cycle")}
             value={tempCycleCount}
           />
+          {errorBag?.cycleNumber && <Text style={styles.errorStyle}>{errorBag.cycleNumber}</Text>}
           {isSaveButtonVisible && (
             <TouchableOpacity onPress={handleSettingsSave}>
               <View style={styles.buttonContainer}>
@@ -94,9 +98,27 @@ const styles = StyleSheet.create({
     marginRight: 20,
     backgroundColor: "rgba(151, 151, 151, 0.25)",
   },
+  inputError: {
+    marginTop: 8,
+    marginBottom: 10,
+    borderRadius: 10,
+    fontSize: 16,
+    lineHeight: 20,
+    padding: 8,
+    marginLeft: 20,
+    marginRight: 20,
+    backgroundColor: "rgba(151, 151, 151, 0.25)",
+    borderColor: "red",
+    borderWidth: 0.5,
+  },
   textStyle: {
     color: "#535353",
     marginLeft: 20,
+  },
+  errorStyle: {
+    color: "red",
+    marginLeft: 20,
+    marginBottom: 10
   },
   buttonContainer: {
     backgroundColor: "#60B3FF",

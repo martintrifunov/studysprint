@@ -48,7 +48,7 @@ const FriendsAddFriendBottomSheetModal = ({
         <Text style={{ fontWeight: "bold" }}>{userFriendCode}</Text>
       </Text>
       <Text style={styles.textStyle}>
-        <Entypo name="code" size={16} color="#535353" />
+        <Entypo name="code" size={16} color="#535353" />{" "}
         Enter friend code:
       </Text>
       <BottomSheetTextInput style={styles.input} />

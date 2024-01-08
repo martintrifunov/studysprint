@@ -2,6 +2,7 @@ import React from "react";
 import { Text, StyleSheet } from "react-native";
 
 const TimerCountDown = ({ timerDate, timerSettingsBottomSheetModalRef, isTimerRunning }) => {
+  let totalMinutes = Math.floor(timerDate / (1000 * 60));
   const showModal = () => {
     if(!isTimerRunning) {
       timerSettingsBottomSheetModalRef.current?.present();
@@ -12,7 +13,7 @@ const TimerCountDown = ({ timerDate, timerSettingsBottomSheetModalRef, isTimerRu
       style={styles.progressNumber}
       onPress={() => showModal()}
     >
-      {timerDate.getMinutes().toString().padStart(2, "0")}:
+      {totalMinutes === 60 ? "60" : timerDate.getMinutes().toString().padStart(2, "0")}:
       {timerDate.getSeconds().toString().padStart(2, "0")}
     </Text>
   );
