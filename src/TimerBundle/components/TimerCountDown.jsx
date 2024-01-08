@@ -1,11 +1,16 @@
 import React from "react";
 import { Text, StyleSheet } from "react-native";
 
-const TimerCountDown = ({ timerDate, timerSettingsBottomSheetModalRef }) => {
+const TimerCountDown = ({ timerDate, timerSettingsBottomSheetModalRef, isTimerRunning }) => {
+  const showModal = () => {
+    if(!isTimerRunning) {
+      timerSettingsBottomSheetModalRef.current?.present();
+    }
+  }
   return (
     <Text
       style={styles.progressNumber}
-      onPress={() => timerSettingsBottomSheetModalRef.current?.present()}
+      onPress={() => showModal()}
     >
       {timerDate.getMinutes().toString().padStart(2, "0")}:
       {timerDate.getSeconds().toString().padStart(2, "0")}

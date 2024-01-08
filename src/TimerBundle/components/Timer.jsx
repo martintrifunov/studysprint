@@ -140,6 +140,7 @@ export default function Timer() {
       <TimerCountDown
         timerDate={new Date(timerCount)}
         timerSettingsBottomSheetModalRef={timerSettingsBottomSheetModalRef}
+        isTimerRunning={isTimerRunning}
       />
 
       <TimerSessionBlock
