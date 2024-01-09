@@ -5,14 +5,16 @@ import {
   TextInput,
   TouchableOpacity,
 } from "react-native";
-import React from "react";
+import React, { useContext } from "react";
 import { FontAwesome } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import AuthContext from "../../AuthBundle/context/AuthContext";
 
 const ProfileEdit = () => {
+  const { logout } = useContext(AuthContext);
   const navigation = useNavigation();
   return (
     <>
@@ -60,6 +62,13 @@ const ProfileEdit = () => {
         >
           <Text style={styles.buttonText}>Save</Text>
         </TouchableOpacity>
+
+        <TouchableOpacity
+          style={styles.logoutContainer}
+          onPress={() => {logout()}}
+        >
+          <Text style={styles.buttonText}>Logout</Text>
+        </TouchableOpacity>
       </View>
     </>
   );
@@ -86,7 +95,7 @@ const styles = StyleSheet.create({
   editPenContainer: {
     position: "absolute",
     left: 225,
-    bottom: 170,
+    bottom: 210,
     backgroundColor: "white",
     elevation: 6,
     borderRadius: 100,
@@ -126,6 +135,18 @@ const styles = StyleSheet.create({
     marginRight: "auto",
     elevation: 5,
     top: 182,
+  },
+  logoutContainer: {
+    backgroundColor: "#ff6060",
+    width: 275,
+    height: 40,
+    borderRadius: 40,
+    justifyContent: "center",
+    alignItems: "center",
+    marginLeft: "auto",
+    marginRight: "auto",
+    elevation: 5,
+    top: 197,
   },
   buttonText: {
     color: "white",

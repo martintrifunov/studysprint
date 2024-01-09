@@ -7,19 +7,19 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { StatusBar } from "expo-status-bar";
-import React from "react";
+import React, { useContext, useState } from "react";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import Animated, {
-  FadeIn,
-  FadeInDown,
-  FadeInUp,
-  FadeOut,
-} from "react-native-reanimated";
+import Animated, { FadeInDown, FadeInUp } from "react-native-reanimated";
+import AuthContext from "../context/AuthContext";
 
 const Login = () => {
+  const [username, setUserName] = useState(null);
+  const [password, setPassword] = useState(null);
+  const { login } = useContext(AuthContext);
   const navigation = useNavigation();
+
   return (
     <View style={styles.container}>
       <Image
@@ -43,7 +43,12 @@ const Login = () => {
         entering={FadeInDown.delay(400).duration(1000).springify()}
         style={styles.inputContainer}
       >
-        <TextInput style={styles.input} placeholder={`Username...`} />
+        <TextInput
+          style={styles.input}
+          placeholder={`Username...`}
+          value={username}
+          onChangeText={(text) => setUserName(text)}
+        />
         <View style={styles.iconStyle}>
           <FontAwesome5 name="user" size={18} color="black" />
         </View>
@@ -57,6 +62,8 @@ const Login = () => {
           style={styles.input}
           placeholder={`Password...`}
           secureTextEntry={true}
+          value={password}
+          onChangeText={(text) => setPassword(text)}
         />
         <View style={styles.iconStyle}>
           <Feather name="lock" size={18} color="black" />
@@ -67,7 +74,12 @@ const Login = () => {
         entering={FadeInDown.delay(800).duration(1000).springify()}
         style={styles.fixButtonFloat}
       >
-        <TouchableOpacity style={styles.buttonContainer}>
+        <TouchableOpacity
+          style={styles.buttonContainer}
+          onPress={() => {
+            login(username, password);
+          }}
+        >
           <Text style={styles.buttonText}>Login</Text>
         </TouchableOpacity>
       </Animated.View>
