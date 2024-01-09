@@ -1,25 +1,36 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, { createContext, useEffect, useState } from "react";
-import { loginService } from "../../AppBundle/services/authService";
-
+import authService from "../../AppBundle/services/authService";
 export default AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [userToken, setUserToken] = useState(null);
+  const [error, setError] = useState(null);
 
-  const login = (username, password) => {
+  const login = async (username, password) => {
     setIsLoading(true);
-    loginService(username, password);
-    // setUserToken("random");
-    // AsyncStorage.setItem("userToken", "random");
+    setError(null);
+
+    try {
+      await authService.loginService(username, password).then(
+        (res) => (res !== undefined ? setUserToken(res) : setError("Wrong username or password!")),
+        (error) => {
+          setError("Wrong username or password!")
+        }
+      );
+    } catch (error) {
+      setError("Network error!")
+    }
+
     setIsLoading(false);
   };
 
   const logout = () => {
     setIsLoading(true);
     setUserToken(null);
-    AsyncStorage.removeItem("userToken");
+    setError(null);
+    authService.logoutService();
     setIsLoading(false);
   };
 
@@ -39,7 +50,7 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ login, logout, isLoading, userToken }}>
+    <AuthContext.Provider value={{ login, logout, isLoading, userToken, error }}>
       {children}
     </AuthContext.Provider>
   );

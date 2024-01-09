@@ -17,7 +17,7 @@ import AuthContext from "../context/AuthContext";
 const Login = () => {
   const [username, setUserName] = useState(null);
   const [password, setPassword] = useState(null);
-  const { login } = useContext(AuthContext);
+  const { login, error } = useContext(AuthContext);
   const navigation = useNavigation();
 
   return (
@@ -38,6 +38,8 @@ const Login = () => {
       >
         Welcome to StudySprint!
       </Animated.Text>
+
+      {error && <Animated.Text entering={FadeInDown.delay(400).duration(1000).springify()} style={styles.errorStyle}>{error}</Animated.Text>}
 
       <Animated.View
         entering={FadeInDown.delay(400).duration(1000).springify()}
@@ -176,6 +178,10 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     top: 150,
+  },
+  errorStyle: {
+    color: "red",
+    top: 110,
   },
 });
 
