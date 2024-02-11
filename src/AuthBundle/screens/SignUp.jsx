@@ -24,7 +24,12 @@ const SignUp = () => {
   const [name, setName] = useState(null);
   const [username, setUserName] = useState(null);
   const [password, setPassword] = useState(null);
-  const { register, error } = useContext(AuthContext);
+  const { register, error, setError} = useContext(AuthContext);
+
+  const navigateMe = () => {
+    setError(null)
+    navigation.navigate('Login');
+  }
 
   return (
     <View style={styles.container}>
@@ -119,7 +124,7 @@ const SignUp = () => {
         style={styles.redirectText}
       >
         <Text>Already have an account? </Text>
-        <TouchableOpacity onPress={() => navigation.navigate("Login")}>
+        <TouchableOpacity onPress={() => navigateMe()}>
           <Text style={{ color: "#38BDF8" }}>Login!</Text>
         </TouchableOpacity>
       </Animated.View>

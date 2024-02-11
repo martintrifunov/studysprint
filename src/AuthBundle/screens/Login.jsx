@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { StatusBar } from "expo-status-bar";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
@@ -17,8 +17,13 @@ import AuthContext from "../context/AuthContext";
 const Login = () => {
   const [username, setUserName] = useState(null);
   const [password, setPassword] = useState(null);
-  const { login, error } = useContext(AuthContext);
+  const { login, error, setError } = useContext(AuthContext);
   const navigation = useNavigation();
+
+  const navigateMe = () => {
+    setError(null)
+    navigation.navigate('SignUp');
+  }
 
   return (
     <View style={styles.container}>
@@ -39,7 +44,14 @@ const Login = () => {
         Welcome to StudySprint!
       </Animated.Text>
 
-      {error && <Animated.Text entering={FadeInDown.delay(400).duration(1000).springify()} style={styles.errorStyle}>{error}</Animated.Text>}
+      {error && (
+        <Animated.Text
+          entering={FadeInDown.delay(400).duration(1000).springify()}
+          style={styles.errorStyle}
+        >
+          {error}
+        </Animated.Text>
+      )}
 
       <Animated.View
         entering={FadeInDown.delay(400).duration(1000).springify()}
@@ -91,7 +103,7 @@ const Login = () => {
         style={styles.redirectText}
       >
         <Text>Don't have an account? </Text>
-        <TouchableOpacity onPress={() => navigation.navigate("SignUp")}>
+        <TouchableOpacity onPress={() => navigateMe()} >
           <Text style={{ color: "#38BDF8" }}>Sign up!</Text>
         </TouchableOpacity>
       </Animated.View>
