@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { StatusBar } from "expo-status-bar";
-import React from "react";
+import React, { useContext, useState } from "react";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
@@ -17,9 +17,15 @@ import Animated, {
   FadeInUp,
   FadeOut,
 } from "react-native-reanimated";
+import AuthContext from "../context/AuthContext";
 
 const SignUp = () => {
   const navigation = useNavigation();
+  const [name, setName] = useState(null);
+  const [username, setUserName] = useState(null);
+  const [password, setPassword] = useState(null);
+  const { register, error } = useContext(AuthContext);
+
   return (
     <View style={styles.container}>
       <Image
@@ -39,11 +45,25 @@ const SignUp = () => {
         Welcome to StudySprint!
       </Animated.Text>
 
+      {error && (
+        <Animated.Text
+          entering={FadeInDown.delay(400).duration(1000).springify()}
+          style={styles.errorStyle}
+        >
+          {error}
+        </Animated.Text>
+      )}
+
       <Animated.View
         entering={FadeInDown.delay(400).duration(1000).springify()}
         style={styles.inputContainer}
       >
-        <TextInput style={styles.input} placeholder={`Username...`} />
+        <TextInput
+          style={styles.input}
+          placeholder={`Display Name...`}
+          value={name}
+          onChangeText={(text) => setName(text)}
+        />
         <View style={styles.iconStyle}>
           <FontAwesome5 name="user" size={18} color="black" />
         </View>
@@ -55,11 +75,12 @@ const SignUp = () => {
       >
         <TextInput
           style={styles.input}
-          placeholder={`Password...`}
-          secureTextEntry={true}
+          placeholder={`Username...`}
+          value={username}
+          onChangeText={(text) => setUserName(text)}
         />
         <View style={styles.iconStyle}>
-          <Feather name="lock" size={18} color="black" />
+          <FontAwesome5 name="user" size={18} color="black" />
         </View>
       </Animated.View>
 
@@ -69,8 +90,10 @@ const SignUp = () => {
       >
         <TextInput
           style={styles.input}
-          placeholder={`Confirm Password...`}
+          placeholder={`Password...`}
           secureTextEntry={true}
+          value={password}
+          onChangeText={(text) => setPassword(text)}
         />
         <View style={styles.iconStyle}>
           <Feather name="lock" size={18} color="black" />
@@ -81,7 +104,12 @@ const SignUp = () => {
         entering={FadeInDown.delay(1000).duration(1000).springify()}
         style={styles.fixFloat}
       >
-        <TouchableOpacity style={styles.buttonContainer}>
+        <TouchableOpacity
+          style={styles.buttonContainer}
+          onPress={() => {
+            register(name, username, password);
+          }}
+        >
           <Text style={styles.buttonText}>Sign up</Text>
         </TouchableOpacity>
       </Animated.View>
@@ -178,6 +206,10 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     top: 165,
+  },
+  errorStyle: {
+    color: "red",
+    top: 130,
   },
 });
 

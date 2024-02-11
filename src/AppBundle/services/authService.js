@@ -14,11 +14,10 @@ const registerService = (name, username, password) => {
       }
     )
     .then((res) => {
-      if (res.data) {
-        AsyncStorage.setItem("userToken", res.data);
-        return res.data;
+      if (res.status == 200) {
+        return res;
       }
-    });
+    })
 };
 
 const loginService = (username, password) => {

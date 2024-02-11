@@ -1,5 +1,5 @@
 import { ActivityIndicator, StyleSheet, View } from "react-native";
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Login from "../screens/Login";
 import SignUp from "../screens/SignUp";
 import AuthContext from "../context/AuthContext";
@@ -9,11 +9,17 @@ import Profile from "../../ProfileBundle/components/Profile";
 import ProfileEdit from "../../ProfileBundle/components/ProfileEdit";
 import Timer from "../../TimerBundle/components/Timer";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { useNavigation, useNavigationState } from "@react-navigation/native";
 
 const Stack = createNativeStackNavigator();
 
 const AuthNav = () => {
   const { isLoading, userToken } = useContext(AuthContext);
+  const navigation = useNavigation();
+  const currentScreen = useNavigationState(
+    (state) => state?.routes[state.index].name
+  );
+  const exeptedPagesFromRedirect = ["SignUp"];
 
   if (isLoading) {
     return (
@@ -22,7 +28,6 @@ const AuthNav = () => {
       </View>
     );
   }
-
   return (
     <>
       {userToken !== null ? (
@@ -43,7 +48,7 @@ const AuthNav = () => {
       ) : (
         <Stack.Navigator
           screenOptions={{ headerShown: false }}
-          initialRouteName="Login"
+          initialRouteName={ currentScreen === ("SignUp" || undefined) ? "SignUp" : "Login"}
         >
           <Stack.Screen name="SignUp" component={SignUp} />
           <Stack.Screen name="Login" component={Login} />

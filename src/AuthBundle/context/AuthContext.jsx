@@ -14,13 +14,34 @@ export const AuthProvider = ({ children }) => {
 
     try {
       await authService.loginService(username, password).then(
-        (res) => (res !== undefined ? setUserToken(res) : setError("Wrong username or password!")),
+        (res) =>
+          res !== undefined
+            ? setUserToken(res)
+            : setError("Wrong username or password!"),
         (error) => {
-          setError("Wrong username or password!")
+          setError("Wrong username or password!");
         }
       );
     } catch (error) {
-      setError("Network error!")
+      setError("Network error!");
+    }
+
+    setIsLoading(false);
+  };
+
+  const register = async (name, username, password) => {
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      await authService.registerService(name, username, password).then(
+        (res) => login(username, password),
+        (error) => {
+          setError("Account already exists please try again!");
+        }
+      );
+    } catch (error) {
+      setError("Network error!");
     }
 
     setIsLoading(false);
@@ -50,7 +71,9 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ login, logout, isLoading, userToken, error }}>
+    <AuthContext.Provider
+      value={{ login, logout, register, isLoading, userToken, error }}
+    >
       {children}
     </AuthContext.Provider>
   );
