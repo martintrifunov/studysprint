@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { Dimensions, StyleSheet, View, Keyboard } from "react-native";
 import {
   useSharedValue,
@@ -12,6 +12,8 @@ import TimerCycles from "./TimerCycles";
 import TimerCircle from "./TimerCircle";
 import TimerSessionBlock from "./TimerSessionBlock";
 import TimerSettingsBottomSheetModal from "./TimerSettingsBottomSheetModal";
+import sessionService from "../../AppBundle/services/sessionService";
+import AuthContext from "../../AuthBundle/context/AuthContext";
 const { width, height } = Dimensions.get("window");
 
 export default function Timer() {
@@ -31,6 +33,7 @@ export default function Timer() {
   const [errorBag, setErrorInErrorBag] = useState(null);
   const timerSettingsBottomSheetModalRef = useRef(null);
   const progress = useSharedValue(0);
+  const { userToken } = useContext(AuthContext);
 
   const startTimer = () => {
     setIsTimerRunning(true);
@@ -160,6 +163,15 @@ export default function Timer() {
       changeMode();
     }
   }, [timerCount]);
+
+  useEffect(() => {
+    sessionService.createPomodoroSessionTemplate(
+      userToken,
+      focusMinutes / 60 / 1000,
+      breakMinutes / 60 / 1000,
+      cycleCount
+    );
+  }, []);
 
   return (
     <View style={styles.container}>

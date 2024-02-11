@@ -24,7 +24,7 @@ const Login = () => {
     setError(null)
     navigation.navigate('SignUp');
   }
-
+  
   return (
     <View style={styles.container}>
       <Image

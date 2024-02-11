@@ -1,19 +1,35 @@
 import { View, StyleSheet } from "react-native";
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import ProfileEditButton from "./ProfileEditButton";
 import ProfileUser from "./ProfileUser";
 import ProfileStreaks from "./ProfileStreaks";
 import ProfileStats from "./ProfileStats";
+import sessionService from "../../AppBundle/services/sessionService";
+import AuthContext from "../../AuthBundle/context/AuthContext";
 
 const Profile = () => {
+  const { userToken } = useContext(AuthContext);
+  const [statistics, setStatistics] = useState([]);
+  const [labels, setLabels] = useState([]);
+  const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+
   const data = {
-    labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+    labels: dayNames,
     datasets: [
       {
-        data: [1, 3, 10, 8, 4, 3, 7],
+        data: statistics,
       },
     ],
   };
+
+  const getStatistics = async () => {
+    setStatistics(await sessionService.getUserSessionStatistics(userToken));
+  };
+
+  useEffect(() => {
+    getStatistics();
+  }, []);
+
   return (
     <View>
       <View style={styles.userContainer}>

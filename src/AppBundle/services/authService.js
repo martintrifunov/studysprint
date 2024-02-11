@@ -17,7 +17,7 @@ const registerService = (name, username, password) => {
       if (res.status == 200) {
         return res;
       }
-    })
+    });
 };
 
 const loginService = (username, password) => {
