@@ -7,6 +7,7 @@ export const AuthProvider = ({ children }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [userToken, setUserToken] = useState(null);
   const [error, setError] = useState(null);
+  const [currentScreen, setCurrentScreen] = useState('Login');
 
   const login = async (username, password) => {
     setIsLoading(true);
@@ -20,6 +21,7 @@ export const AuthProvider = ({ children }) => {
             : setError("Wrong username or password!"),
         (error) => {
           setError("Wrong username or password!");
+          setCurrentScreen('Login');
         }
       );
     } catch (error) {
@@ -38,6 +40,7 @@ export const AuthProvider = ({ children }) => {
         (res) => login(username, password),
         (error) => {
           setError("Account already exists please try again!");
+          setCurrentScreen('SignUp');
         }
       );
     } catch (error) {
@@ -52,6 +55,7 @@ export const AuthProvider = ({ children }) => {
     setUserToken(null);
     setError(null);
     authService.logoutService();
+    setCurrentScreen('Login');
     setIsLoading(false);
   };
 
@@ -72,7 +76,7 @@ export const AuthProvider = ({ children }) => {
 
   return (
     <AuthContext.Provider
-      value={{ login, logout, register, isLoading, userToken, error }}
+      value={{ login, logout, register, isLoading, userToken, error, currentScreen }}
     >
       {children}
     </AuthContext.Provider>
