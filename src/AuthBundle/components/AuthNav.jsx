@@ -9,6 +9,7 @@ import Profile from "../../ProfileBundle/components/Profile";
 import ProfileEdit from "../../ProfileBundle/components/ProfileEdit";
 import Timer from "../../TimerBundle/components/Timer";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import ProfileCamera from "../../ProfileBundle/components/ProfileCamera";
 
 const Stack = createNativeStackNavigator();
 
@@ -34,13 +35,17 @@ const AuthNav = () => {
             <Stack.Screen name="Timer" component={Timer} />
             <Stack.Screen name="Profile" component={Profile} />
             <Stack.Screen name="ProfileEdit" component={ProfileEdit} />
+            <Stack.Screen name="ProfileCamera" component={ProfileCamera} />
           </Stack.Navigator>
           <View style={styles.navContainer}>
-            <Navigation />
+            {currentScreen !== "ProfileCamera" && <Navigation />}
           </View>
         </>
       ) : (
-        <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName={currentScreen}>
+        <Stack.Navigator
+          screenOptions={{ headerShown: false }}
+          initialRouteName={currentScreen}
+        >
           <Stack.Screen name="SignUp" component={SignUp} />
           <Stack.Screen name="Login" component={Login} />
         </Stack.Navigator>

@@ -31,13 +31,43 @@ export default function Timer() {
   const [tempCycleCount, setTempCycleCount] = useState("");
   const [isSaveButtonVisible, setIsSaveButtonVisible] = useState(false);
   const [errorBag, setErrorInErrorBag] = useState(null);
+  const [templateId, setTemplateId] = useState(null);
   const timerSettingsBottomSheetModalRef = useRef(null);
   const progress = useSharedValue(0);
   const { userToken } = useContext(AuthContext);
+  const [isThereAnActiveSession, setIsThereAnActiveSession] = useState(false);
+
+  const getCurrentSessionTemplate = async () => {
+    await sessionService
+      .getCurrentPomodoroSession(userToken)
+      .then((res) => console.log(res))
+      .catch((err) => console.error(err));
+  };
+
+  const createSession = async () => {
+    await sessionService
+      .createPomodoroSession(userToken, templateId)
+      .then((res) => console.log(res))
+      .catch((err) => console.error(err));
+  };
+
+  const handleSessionStart = async () => {
+    if (isThereAnActiveSession === true) {
+      let tmp = await createSessionTemplate().then((res) => res);
+      console.log(tmp);
+    } else {
+      if (templateId === null) {
+        let tmp = createSessionTemplate();
+        setIsThereAnActiveSession(true);
+        console.log(tmp);
+      }
+    }
+  };
 
   const startTimer = () => {
     setIsTimerRunning(true);
 
+    // handleSessionStart();
     const timerID = setInterval(
       () => setTimerCount((prev) => prev - 1000),
       1000
@@ -132,6 +162,19 @@ export default function Timer() {
     }
   };
 
+  const updateSessionTemplate = async () => {
+    await sessionService
+      .updatePomodoroSessionTemplate(
+        userToken,
+        templateId,
+        parseInt(tempFocusMinutes),
+        parseInt(tempBreakMinutes),
+        parseInt(tempCycleCount)
+      )
+      .then((res) => res)
+      .catch((err) => console.error(err));
+  };
+
   const handleSettingsSave = () => {
     if (Number.isInteger(parseInt(tempFocusMinutes))) {
       setFocusMinutes(parseInt(tempFocusMinutes) * 60 * 1000);
@@ -152,10 +195,27 @@ export default function Timer() {
     if (Number.isInteger(parseInt(tempCycleCount))) {
       setCycleCount(parseInt(tempCycleCount));
     }
+    if (templateId !== null) {
+      updateSessionTemplate();
+    } else {
+      createSessionTemplate();
+    }
 
     setIsSaveButtonVisible(false);
     timerSettingsBottomSheetModalRef.current?.snapToIndex(0);
     Keyboard.dismiss();
+  };
+
+  const createSessionTemplate = async () => {
+    await sessionService
+      .createPomodoroSessionTemplate(
+        userToken,
+        parseInt(tempFocusMinutes),
+        parseInt(tempBreakMinutes),
+        cycleCount
+      )
+      .then((res) => setTemplateId(res))
+      .catch((err) => console.error(err));
   };
 
   useEffect(() => {
@@ -163,15 +223,6 @@ export default function Timer() {
       changeMode();
     }
   }, [timerCount]);
-
-  useEffect(() => {
-    sessionService.createPomodoroSessionTemplate(
-      userToken,
-      focusMinutes / 60 / 1000,
-      breakMinutes / 60 / 1000,
-      cycleCount
-    );
-  }, []);
 
   return (
     <View style={styles.container}>

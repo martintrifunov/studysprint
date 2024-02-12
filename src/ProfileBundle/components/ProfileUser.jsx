@@ -6,10 +6,10 @@ const ProfileUser = () => {
   return (
     <View style={styles.userBody}>
       <View style={styles.profilePictureContainer}>
-          <TouchableOpacity>
-            <FontAwesome name="user-circle" size={90} color="black" />
-          </TouchableOpacity>
-        </View>
+        <TouchableOpacity>
+          <FontAwesome name="user-circle" size={90} color="black" />
+        </TouchableOpacity>
+      </View>
       <Text style={styles.userName}>John Doe</Text>
     </View>
   );
@@ -31,10 +31,10 @@ const styles = StyleSheet.create({
   },
   profilePictureContainer: {
     borderRadius: 100,
-    borderColor: 'white',
+    borderColor: "white",
     backgroundColor: "white",
     borderWidth: 3,
-    elevation: 5
+    elevation: 5,
   },
 });
 

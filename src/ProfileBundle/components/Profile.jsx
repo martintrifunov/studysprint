@@ -10,11 +10,9 @@ import AuthContext from "../../AuthBundle/context/AuthContext";
 const Profile = () => {
   const { userToken } = useContext(AuthContext);
   const [statistics, setStatistics] = useState([]);
-  const [labels, setLabels] = useState([]);
-  const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
   const data = {
-    labels: dayNames,
+    labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
     datasets: [
       {
         data: statistics,
@@ -22,13 +20,15 @@ const Profile = () => {
     ],
   };
 
-  const getStatistics = async () => {
-    setStatistics(await sessionService.getUserSessionStatistics(userToken));
-  };
+  // const getStatistics = async () => {
+  //   await sessionService
+  //     .getUserSessionStatistics(userToken)
+  //     .then((res) => setStatistics(res));
+  // };
 
-  useEffect(() => {
-    getStatistics();
-  }, []);
+  // useEffect(() => {
+  //   getStatistics();
+  // }, []);
 
   return (
     <View>

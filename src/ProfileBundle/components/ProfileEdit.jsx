@@ -14,8 +14,14 @@ import { useNavigation } from "@react-navigation/native";
 import AuthContext from "../../AuthBundle/context/AuthContext";
 
 const ProfileEdit = () => {
-  const { logout } = useContext(AuthContext);
+  const { logout, setCurrentScreen } = useContext(AuthContext);
   const navigation = useNavigation();
+
+  const navigateToCamera = () => {
+    setCurrentScreen("ProfileCamera");
+    navigation.navigate("ProfileCamera")
+  }
+
   return (
     <>
       <View style={styles.profileContainer}>
@@ -23,7 +29,7 @@ const ProfileEdit = () => {
           <FontAwesome name="user-circle" size={115} color="black" />
         </View>
 
-        <TouchableOpacity style={styles.editPenContainer}>
+        <TouchableOpacity style={styles.editPenContainer} onPress={() => navigateToCamera()}>
           <MaterialCommunityIcons name="pencil" size={24} color="black" />
         </TouchableOpacity>
 
