@@ -1,10 +1,10 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
-import { Dimensions, StyleSheet, View, Keyboard } from "react-native";
+import { Dimensions, StyleSheet, View, Keyboard, Vibration, ToastAndroid } from "react-native";
 import {
   useSharedValue,
   withTiming,
   cancelAnimation,
-  Easing,
+  Easing
 } from "react-native-reanimated";
 import TimerCountDown from "./TimerCountDown";
 import TimerToggleButton from "./TimerToggleButton";
@@ -94,12 +94,15 @@ export default function Timer() {
       setTimerMode("Break");
       setTimerCount(breakMinutes);
       setFocusCounter(focusCounter + 1);
+      ToastAndroid.show("Work session has ended...", ToastAndroid.SHORT, ToastAndroid.BOTTOM)
     } else {
       setTimerMode("Focus");
       setTimerCount(focusMinutes);
       setBreakCounter(breakCounter + 1);
+      ToastAndroid.show("Break has ended...", ToastAndroid.SHORT, ToastAndroid.BOTTOM)
     }
-
+   
+    Vibration.vibrate(2000);
     stopTimer();
     progress.value = 0;
   };
