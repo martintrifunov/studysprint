@@ -1,17 +1,54 @@
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
-import React from "react";
+import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import { FontAwesome } from "@expo/vector-icons";
+import userService from "../../AppBundle/services/userService";
+import AuthContext from "../../AuthBundle/context/AuthContext";
+import { useFocusEffect } from '@react-navigation/native';
 
 const ProfileUser = () => {
+  const [image, setImage] = useState(null);
+  const { userToken } = useContext(AuthContext);
+  const [isLoading, setIsloading] = useState(false);
+
+  const getProfilePicture = async () => {
+    setIsloading(true);
+    try {
+      const res = await userService.getProfilePictureService(userToken);
+      setImage(res.base64);
+    } catch (error) {
+      console.log("Error fetching profile picture:", error);
+      setImage(null);
+    }
+    setIsloading(false);
+  };
+
+  useEffect(() => {
+    getProfilePicture();
+  }, []);
+
+  useFocusEffect(
+    useCallback(() => {
+      getProfilePicture();
+    }, [])
+  );
+
   return (
-    <View style={styles.userBody}>
-      <View style={styles.profilePictureContainer}>
-        <TouchableOpacity>
-          <FontAwesome name="user-circle" size={90} color="black" />
-        </TouchableOpacity>
-      </View>
-      <Text style={styles.userName}>John Doe</Text>
-    </View>
+    <>
+      {!isLoading && (
+        <View style={styles.userBody}>
+          <View style={styles.profilePictureContainer}>
+            <TouchableOpacity>
+              {image ? (
+                <Image source={{ uri: image }} style={styles.profilePicture}/>
+              ) : (
+                <FontAwesome name="user-circle" size={90} color="black" />
+              )}
+            </TouchableOpacity>
+          </View>
+          <Text style={styles.userName}>John Doe</Text>
+        </View>
+      )}
+    </>
   );
 };
 
@@ -36,6 +73,11 @@ const styles = StyleSheet.create({
     borderWidth: 3,
     elevation: 5,
   },
+  profilePicture: {
+    width: 90,
+    height: 90,
+    borderRadius: 100,
+  }
 });
 
 export default ProfileUser;

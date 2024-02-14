@@ -4,78 +4,116 @@ import {
   StyleSheet,
   TextInput,
   TouchableOpacity,
+  Image
 } from "react-native";
-import React, { useContext } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import { FontAwesome } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import AuthContext from "../../AuthBundle/context/AuthContext";
+import userService from "../../AppBundle/services/userService";
+import { useFocusEffect } from '@react-navigation/native';
 
 const ProfileEdit = () => {
-  const { logout, setCurrentScreen } = useContext(AuthContext);
+  const { logout, setCurrentScreen, userToken } = useContext(AuthContext);
   const navigation = useNavigation();
+  const [image, setImage] = useState(null);
+  const [isLoading, setIsloading] = useState(false);
+
+  const getProfilePicture = async () => {
+    setIsloading(true);
+    try {
+      const res = await userService.getProfilePictureService(userToken);
+      setImage(res.base64);
+    } catch (error) {
+      console.log("Error fetching profile picture:", error);
+      setImage(null);
+    }
+    setIsloading(false);
+  };
+
+  useEffect(() => {
+    getProfilePicture();
+  },[]);
+
+  useFocusEffect(
+    useCallback(() => {
+      getProfilePicture();
+    }, [])
+  );
 
   const navigateToCamera = () => {
     setCurrentScreen("ProfileCamera");
-    navigation.navigate("ProfileCamera")
-  }
+    navigation.navigate("ProfileCamera");
+  };
 
   return (
     <>
-      <View style={styles.profileContainer}>
-        <View style={styles.profilePictureContainer}>
-          <FontAwesome name="user-circle" size={115} color="black" />
-        </View>
-
-        <TouchableOpacity style={styles.editPenContainer} onPress={() => navigateToCamera()}>
-          <MaterialCommunityIcons name="pencil" size={24} color="black" />
-        </TouchableOpacity>
-
-        <View style={styles.inputContainer}>
-          <TextInput style={styles.input} placeholder={`Display Name...`} />
-          <View style={styles.iconStyle}>
-            <FontAwesome5 name="user" size={18} color="black" />
+      {!isLoading && (
+        <View style={styles.profileContainer}>
+          <View style={styles.profilePictureContainer}>
+            {image ? (
+              <Image source={{ uri: image }} style={styles.profilePicture} />
+            ) : (
+              <FontAwesome name="user-circle" size={120} color="black" />
+            )}
           </View>
-        </View>
 
-        <View style={styles.inputContainer}>
-          <TextInput
-            style={styles.input}
-            placeholder={`New Password...`}
-            secureTextEntry={true}
-          />
-          <View style={styles.iconStyle}>
-            <Feather name="lock" size={18} color="black" />
+          <TouchableOpacity
+            style={styles.editPenContainer}
+            onPress={() => navigateToCamera()}
+          >
+            <MaterialCommunityIcons name="pencil" size={24} color="black" />
+          </TouchableOpacity>
+
+          <View style={styles.inputContainer}>
+            <TextInput style={styles.input} placeholder={`Display Name...`} />
+            <View style={styles.iconStyle}>
+              <FontAwesome5 name="user" size={18} color="black" />
+            </View>
           </View>
-        </View>
 
-        <View style={styles.inputContainer}>
-          <TextInput
-            style={styles.input}
-            placeholder={`Old Password...`}
-            secureTextEntry={true}
-          />
-          <View style={styles.iconStyle}>
-            <Feather name="lock" size={18} color="black" />
+          <View style={styles.inputContainer}>
+            <TextInput
+              style={styles.input}
+              placeholder={`New Password...`}
+              secureTextEntry={true}
+            />
+            <View style={styles.iconStyle}>
+              <Feather name="lock" size={18} color="black" />
+            </View>
           </View>
+
+          <View style={styles.inputContainer}>
+            <TextInput
+              style={styles.input}
+              placeholder={`Old Password...`}
+              secureTextEntry={true}
+            />
+            <View style={styles.iconStyle}>
+              <Feather name="lock" size={18} color="black" />
+            </View>
+          </View>
+
+          <TouchableOpacity
+            style={styles.buttonContainer}
+            onPress={() => navigation.navigate("Login")}
+          >
+            <Text style={styles.buttonText}>Save</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.logoutContainer}
+            onPress={() => {
+              logout();
+            }}
+          >
+            <Text style={styles.buttonText}>Logout</Text>
+          </TouchableOpacity>
         </View>
-
-        <TouchableOpacity
-          style={styles.buttonContainer}
-          onPress={() => navigation.navigate("Login")}
-        >
-          <Text style={styles.buttonText}>Save</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={styles.logoutContainer}
-          onPress={() => {logout()}}
-        >
-          <Text style={styles.buttonText}>Logout</Text>
-        </TouchableOpacity>
-      </View>
+      )}
     </>
   );
 };
@@ -97,6 +135,11 @@ const styles = StyleSheet.create({
     borderWidth: 3,
     elevation: 5,
     top: 10,
+  },
+  profilePicture: {
+    width: 120,
+    height: 120,
+    borderRadius: 100,
   },
   editPenContainer: {
     position: "absolute",

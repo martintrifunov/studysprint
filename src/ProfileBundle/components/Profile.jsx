@@ -9,7 +9,8 @@ import AuthContext from "../../AuthBundle/context/AuthContext";
 
 const Profile = () => {
   const { userToken } = useContext(AuthContext);
-  const [statistics, setStatistics] = useState([]);
+  const [statistics, setStatistics] = useState([0, 0, 0, 0, 0, 0, 0]);
+  const [isLoading, setIsloading] = useState(true);
 
   const data = {
     labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
@@ -20,15 +21,21 @@ const Profile = () => {
     ],
   };
 
-  // const getStatistics = async () => {
-  //   await sessionService
-  //     .getUserSessionStatistics(userToken)
-  //     .then((res) => setStatistics(res));
-  // };
+  const getStatistics = async () => {
+    setIsloading(true);
+    try {
+      const res = await sessionService.getUserSessionStatistics(userToken);
+      setStatistics(res);
+    } catch (error) {
+      console.log("Error fetching profile stats:", error);
+      setStatistics([0, 0, 0, 0, 0, 0, 0]);
+    }
+    setIsloading(false);
+  };
 
-  // useEffect(() => {
-  //   getStatistics();
-  // }, []);
+  useEffect(() => {
+    getStatistics();
+  }, []);
 
   return (
     <View>
@@ -39,7 +46,7 @@ const Profile = () => {
       </View>
 
       <View style={styles.statsContainer}>
-        <ProfileStats data={data} />
+        {!isLoading && <ProfileStats data={data} />}
       </View>
     </View>
   );

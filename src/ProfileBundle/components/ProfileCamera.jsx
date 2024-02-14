@@ -12,6 +12,7 @@ import { Camera, CameraType } from "expo-camera";
 import * as MediaLibrary from "expo-media-library";
 import AuthContext from "../../AuthBundle/context/AuthContext";
 import { useNavigation } from "@react-navigation/native";
+import userService from "../../AppBundle/services/userService";
 
 const ProfileCamera = () => {
   const cameraRef = useRef(null);
@@ -19,7 +20,7 @@ const ProfileCamera = () => {
   const [image, setImage] = useState(null);
   const [type, setType] = useState(Camera.Constants.Type.back);
   const [flash, setFlash] = useState(Camera.Constants.FlashMode.off);
-  const { setCurrentScreen } = useContext(AuthContext);
+  const { setCurrentScreen, userToken } = useContext(AuthContext);
   const navigation = useNavigation();
 
   useEffect(() => {
@@ -41,6 +42,13 @@ const ProfileCamera = () => {
     }
   };
 
+  const handleSavePicture = async (base64) => {
+    await userService
+      .uploadProfilePictureService(userToken, base64)
+      .then((res) => res)
+      .catch((err) => err);
+  };
+
   const navigateToProfile = () => {
     setCurrentScreen("ProfileEdit");
     navigation.navigate("ProfileEdit");
@@ -50,8 +58,9 @@ const ProfileCamera = () => {
     if (image) {
       try {
         await MediaLibrary.createAssetAsync(image);
-        Alert.alert("Picture saved!");
+        await handleSavePicture(image);
         setImage(null);
+
         navigateToProfile();
       } catch (error) {
         console.log(error);
