@@ -5,19 +5,23 @@ import {
   TouchableOpacity,
   Keyboard,
 } from "react-native";
-import React, { useCallback, useMemo } from "react";
+import React, { useCallback, useContext, useMemo, useState } from "react";
 import {
   BottomSheetModal,
   BottomSheetBackdrop,
   BottomSheetTextInput,
 } from "@gorhom/bottom-sheet";
 import { Entypo } from "@expo/vector-icons";
+import AuthContext from "../../AuthBundle/context/AuthContext";
+import friendsService from "../../AppBundle/services/friendsService";
 
 const FriendsAddFriendBottomSheetModal = ({
   userFriendCode,
   addFriendBottomSheetModalRef,
 }) => {
   const snapPoints = useMemo(() => ["35%"], []);
+  const [newFriendCode, setNewFriendCode] = useState(null);
+  const { userToken } = useContext(AuthContext);
 
   const renderBackdrop = useCallback(
     (props) => (
@@ -30,10 +34,12 @@ const FriendsAddFriendBottomSheetModal = ({
     []
   );
 
-  const handleAddFriend = () => {
+  const handleAddFriend = async () => {
+    await friendsService.addUserFriend(userToken, newFriendCode);
     addFriendBottomSheetModalRef.current?.snapToIndex(0);
     Keyboard.dismiss();
   };
+  // 9R4VCC
 
   return (
     <BottomSheetModal
@@ -48,10 +54,13 @@ const FriendsAddFriendBottomSheetModal = ({
         <Text style={{ fontWeight: "bold" }}>{userFriendCode}</Text>
       </Text>
       <Text style={styles.textStyle}>
-        <Entypo name="code" size={16} color="#535353" />{" "}
-        Enter friend code:
+        <Entypo name="code" size={16} color="#535353" /> Enter friend code:
       </Text>
-      <BottomSheetTextInput style={styles.input} />
+      <BottomSheetTextInput
+        style={styles.input}
+        onChangeText={(value) => setNewFriendCode(value)}
+        value={newFriendCode}
+      />
       <TouchableOpacity onPress={handleAddFriend}>
         <View style={styles.buttonContainer}>
           <Text style={styles.buttonText}>Add Friend</Text>

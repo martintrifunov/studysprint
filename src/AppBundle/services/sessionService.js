@@ -72,7 +72,6 @@ const updatePomodoroSessionTemplate = (
 };
 
 const createPomodoroSession = (token, id) => {
-  console.log(id);
   return axios
     .post(`${BASE_URL}/pomodoro/session/create`, id, {
       headers: {

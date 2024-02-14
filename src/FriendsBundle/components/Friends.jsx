@@ -1,23 +1,45 @@
 import { View, StyleSheet } from "react-native";
-import React, { useRef } from "react";
+import React, { useCallback, useContext, useRef, useState } from "react";
 import FriendsAddFriendBottomSheetModal from "./FriendsAddFriendBottomSheetModal";
 import FriendsBlockHeader from "./FriendsBlockHeader";
 import FriendsBlockBody from "./FriendsBlockBody";
+import AuthContext from "../../AuthBundle/context/AuthContext";
+import { useFocusEffect } from "@react-navigation/native";
+import friendsService from "../../AppBundle/services/friendsService";
 
 const Friends = () => {
-  const userFriendCode = "#372AB@";
+  const { userToken } = useContext(AuthContext);
+  const [userFriendCode, setUserFriendCode] = useState(null);
   const addFriendBottomSheetModalRef = useRef(null);
-  const friendsListDataFixture = [
-    { name: "John Doe", session: true },
-    { name: "John Doe", session: true },
-    { name: "Jane Doe", session: false },
-    { name: "John Doe", session: true },
-    { name: "Jane Doe", session: false },
-    { name: "Jane Doe", session: false },
-    { name: "John Doe", session: true },
-    { name: "Jane Doe", session: false },
-    { name: "Jane Doe", session: false },
-  ];
+  const [friendsListData, setFriendsListData] = useState([]);
+
+  const getOwnFriendCode = async (userToken) => {
+    try {
+      const res = await friendsService.getUserCode(userToken);
+      setUserFriendCode(res);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getFriends = async (userToken) => {
+    try {
+      const res = await friendsService.getUserFriends(userToken);
+
+      const transformedData = res.map(item => ({ name: item.name, session: true }));
+
+      setFriendsListData(transformedData)
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useFocusEffect(
+    useCallback(() => {
+      getOwnFriendCode(userToken);
+      getFriends(userToken)
+    }, [])
+  );
 
   return (
     <View style={styles.blockContainer}>
@@ -25,7 +47,7 @@ const Friends = () => {
         addFriendBottomSheetModalRef={addFriendBottomSheetModalRef}
       />
 
-      <FriendsBlockBody friendsList={friendsListDataFixture} />
+      <FriendsBlockBody friendsList={friendsListData} />
 
       <FriendsAddFriendBottomSheetModal
         userFriendCode={userFriendCode}

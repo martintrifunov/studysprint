@@ -1,6 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, { createContext, useEffect, useState } from "react";
 import authService from "../../AppBundle/services/authService";
+import friendsService from "../../AppBundle/services/friendsService";
 export default AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
@@ -85,7 +86,7 @@ export const AuthProvider = ({ children }) => {
         error,
         setError,
         currentScreen,
-        setCurrentScreen
+        setCurrentScreen,
       }}
     >
       {children}
