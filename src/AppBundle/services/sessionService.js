@@ -72,9 +72,9 @@ const updatePomodoroSessionTemplate = (
 };
 
 const createPomodoroSession = (token, id) => {
-  console.log(token, id)
+  console.log(id);
   return axios
-    .post(`${BASE_URL}/pomodoro/session/create`, `${id}`, {
+    .post(`${BASE_URL}/pomodoro/session/create`, id, {
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
@@ -95,6 +95,66 @@ const getCurrentPomodoroSession = (token) => {
         Authorization: `Bearer ${token}`,
       },
     })
+    .then((res) => {
+      if (res.data) {
+        return res.data;
+      }
+    })
+    .catch((error) => console.error(error));
+};
+
+const startPomodoroSession = (token) => {
+  return axios
+    .post(
+      `${BASE_URL}pomodoro/session/start`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      }
+    )
+    .then((res) => {
+      if (res.data) {
+        return res.data;
+      }
+    })
+    .catch((error) => console.error(error));
+};
+
+const updatePomodoroSession = (token) => {
+  return axios
+    .post(
+      `${BASE_URL}/pomodoro/session/update`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      }
+    )
+    .then((res) => {
+      if (res.data) {
+        return res.data;
+      }
+    })
+    .catch((error) => console.error(error));
+};
+
+const endPomodoroSession = (token) => {
+  return axios
+    .post(
+      `${BASE_URL}/pomodoro/session/end`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      }
+    )
     .then((res) => {
       if (res.data) {
         return res.data;
@@ -124,6 +184,9 @@ const sessionService = {
   getUserSessionStatistics,
   getCurrentPomodoroSession,
   createPomodoroSession,
+  startPomodoroSession,
+  updatePomodoroSession,
+  endPomodoroSession,
 };
 
 export default sessionService;

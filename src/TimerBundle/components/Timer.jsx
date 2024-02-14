@@ -1,10 +1,17 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
-import { Dimensions, StyleSheet, View, Keyboard, Vibration, ToastAndroid } from "react-native";
+import {
+  Dimensions,
+  StyleSheet,
+  View,
+  Keyboard,
+  Vibration,
+  ToastAndroid,
+} from "react-native";
 import {
   useSharedValue,
   withTiming,
   cancelAnimation,
-  Easing
+  Easing,
 } from "react-native-reanimated";
 import TimerCountDown from "./TimerCountDown";
 import TimerToggleButton from "./TimerToggleButton";
@@ -38,28 +45,36 @@ export default function Timer() {
   const [isThereAnActiveSession, setIsThereAnActiveSession] = useState(false);
 
   const getCurrentSessionTemplate = async () => {
-    await sessionService
-      .getCurrentPomodoroSession(userToken)
-      .then((res) => console.log(res))
-      .catch((err) => console.error(err));
+    try {
+      const res = await sessionService.getCurrentPomodoroSession(userToken);
+      console.log(res);
+    } catch (error) {
+      console.log("Error fetching profile picture:", error);
+    }
   };
 
-  const createSession = async () => {
-    await sessionService
-      .createPomodoroSession(userToken, templateId)
-      .then((res) => console.log(res))
-      .catch((err) => console.error(err));
-  };
+  // useEffect(() => {
+  //   if (isThereAnActiveSession === true) {
+  //     getCurrentSessionTemplate();
+  //   }
+  // }, []);
 
   const handleSessionStart = async () => {
-    if (isThereAnActiveSession === true) {
-      let tmp = await createSessionTemplate().then((res) => res);
-      console.log(tmp);
-    } else {
+    if (isThereAnActiveSession === false) {
       if (templateId === null) {
-        let tmp = createSessionTemplate();
+        const tmpId = await sessionService.createPomodoroSessionTemplate(
+          userToken,
+          focusMinutes / 1000 / 60,
+          breakMinutes / 1000 / 60,
+          cycleCount
+        );
         setIsThereAnActiveSession(true);
-        console.log(tmp);
+        setTemplateId(tmpId);
+        await sessionService.createPomodoroSession(userToken, tmpId);
+        await sessionService.startPomodoroSession(userToken);
+      } else {
+        setIsThereAnActiveSession(true);
+        await sessionService.createPomodoroSession(userToken, templateId);
       }
     }
   };
@@ -67,7 +82,8 @@ export default function Timer() {
   const startTimer = () => {
     setIsTimerRunning(true);
 
-    // handleSessionStart();
+    handleSessionStart();
+
     const timerID = setInterval(
       () => setTimerCount((prev) => prev - 1000),
       1000
@@ -89,19 +105,28 @@ export default function Timer() {
     setIsTimerRunning(false);
   };
 
-  const changeMode = () => {
+  const changeMode = async () => {
     if (timerMode === "Focus") {
       setTimerMode("Break");
       setTimerCount(breakMinutes);
       setFocusCounter(focusCounter + 1);
-      ToastAndroid.show("Work session has ended...", ToastAndroid.SHORT, ToastAndroid.BOTTOM)
+      ToastAndroid.show(
+        "Work session has ended...",
+        ToastAndroid.SHORT,
+        ToastAndroid.BOTTOM
+      );
     } else {
       setTimerMode("Focus");
       setTimerCount(focusMinutes);
       setBreakCounter(breakCounter + 1);
-      ToastAndroid.show("Break has ended...", ToastAndroid.SHORT, ToastAndroid.BOTTOM)
+      ToastAndroid.show(
+        "Break has ended...",
+        ToastAndroid.SHORT,
+        ToastAndroid.BOTTOM
+      );
     }
-   
+    await sessionService.updatePomodoroSession(userToken);
+
     Vibration.vibrate(2000);
     stopTimer();
     progress.value = 0;
