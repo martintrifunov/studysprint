@@ -45,7 +45,7 @@ const ProfileUser = () => {
               )}
             </TouchableOpacity>
           </View>
-          <Text style={styles.userName}>John Doe</Text>
+          <Text style={styles.userName}>Admin</Text>
         </View>
       )}
     </>
