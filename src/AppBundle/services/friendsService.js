@@ -3,10 +3,10 @@ import axios from "axios";
 
 const addUserFriend = (token, friendCode) => {
   return axios
-    .post(`${BASE_URL}/user/friends/add`, {friendCode}, {
+    .post(`${BASE_URL}/user/friends/add`, friendCode, {
       headers: {
         Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
+        "Content-Type": "text/plain",
       },
     })
     .then((res) => {
@@ -14,7 +14,7 @@ const addUserFriend = (token, friendCode) => {
         return res.data;
       }
     })
-    .catch((err) => err);
+    .catch((err) => console.log(err));
 };
 
 const getUserFriends = (token) => {

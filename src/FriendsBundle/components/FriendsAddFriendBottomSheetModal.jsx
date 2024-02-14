@@ -14,6 +14,7 @@ import {
 import { Entypo } from "@expo/vector-icons";
 import AuthContext from "../../AuthBundle/context/AuthContext";
 import friendsService from "../../AppBundle/services/friendsService";
+import { useNavigation } from "@react-navigation/native";
 
 const FriendsAddFriendBottomSheetModal = ({
   userFriendCode,
@@ -22,6 +23,14 @@ const FriendsAddFriendBottomSheetModal = ({
   const snapPoints = useMemo(() => ["35%"], []);
   const [newFriendCode, setNewFriendCode] = useState(null);
   const { userToken } = useContext(AuthContext);
+  const [error, setError] = useState(null);
+  const navigation = useNavigation();
+
+  const navigateMe = () => {
+    setError(null);
+    navigation.navigate("Timer");
+    navigation.navigate("Friends");
+  };
 
   const renderBackdrop = useCallback(
     (props) => (
@@ -34,12 +43,21 @@ const FriendsAddFriendBottomSheetModal = ({
     []
   );
 
-  const handleAddFriend = async () => {
-    await friendsService.addUserFriend(userToken, newFriendCode);
-    addFriendBottomSheetModalRef.current?.snapToIndex(0);
-    Keyboard.dismiss();
+  const sendFriendRequest = async () => {
+    try {
+      await friendsService.addUserFriend(userToken, newFriendCode);
+    } catch (error) {
+      console.log(error);
+    }
   };
-  // 9R4VCC
+
+  const handleAddFriend = () => {
+    sendFriendRequest();
+    setError(null);
+    addFriendBottomSheetModalRef.current?.dismiss();
+    Keyboard.dismiss();
+    navigateMe()
+  };
 
   return (
     <BottomSheetModal
