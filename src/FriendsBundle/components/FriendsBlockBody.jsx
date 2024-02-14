@@ -12,6 +12,8 @@ const FriendsBlockBody = ({ friendsList }) => {
             key={index}
             name={friend.name}
             session={friend.session}
+            friendCode={friend.friendCode}
+            id={friend.id}
           />
         ))}
       </ScrollView>

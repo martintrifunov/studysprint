@@ -68,7 +68,7 @@ const updatePomodoroSessionTemplate = (
         return res.data;
       }
     })
-    .catch((error) => console.error(error));
+    .catch((error) => console.log(error));
 };
 
 const createPomodoroSession = (token, id) => {
@@ -84,7 +84,7 @@ const createPomodoroSession = (token, id) => {
         return res.data;
       }
     })
-    .catch((error) => console.error(error));
+    .catch((error) => console.log(error));
 };
 
 const getCurrentPomodoroSession = (token) => {
@@ -99,7 +99,7 @@ const getCurrentPomodoroSession = (token) => {
         return res.data;
       }
     })
-    .catch((error) => console.error(error));
+    .catch((error) => console.log(error));
 };
 
 const startPomodoroSession = (token) => {
@@ -119,7 +119,7 @@ const startPomodoroSession = (token) => {
         return res.data;
       }
     })
-    .catch((error) => console.error(error));
+    .catch((error) => console.log(error));
 };
 
 const updatePomodoroSession = (token) => {
@@ -139,7 +139,7 @@ const updatePomodoroSession = (token) => {
         return res.data;
       }
     })
-    .catch((error) => console.error(error));
+    .catch((error) => console.log(error));
 };
 
 const endPomodoroSession = (token) => {
@@ -159,8 +159,42 @@ const endPomodoroSession = (token) => {
         return res.data;
       }
     })
-    .catch((error) => console.error(error));
+    .catch((error) => console.log(error));
 };
+
+const addMemberToSession = (token, id) => {
+  return axios
+    .put(`${BASE_URL}/pomodoro/session/members/add`, id, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    })
+    .then((res) => {
+      if (res.data) {
+        return res.data;
+      }
+    })
+    .catch((error) => console.log(error));
+};
+
+const removeMemberToSession = (token, id) => {
+  return axios
+    .put(`${BASE_URL}/pomodoro/session/members/delete`, id, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    })
+    .then((res) => {
+      if (res.data) {
+        return res.data;
+      }
+    })
+    .catch((error) => console.log(error));
+};
+
+
 
 const getUserSessionStatistics = (token) => {
   return axios
@@ -186,6 +220,8 @@ const sessionService = {
   startPomodoroSession,
   updatePomodoroSession,
   endPomodoroSession,
+  addMemberToSession,
+  removeMemberToSession
 };
 
 export default sessionService;

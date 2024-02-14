@@ -1,16 +1,75 @@
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
-import React from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  ToastAndroid,
+} from "react-native";
+import React, { useContext } from "react";
 import { FontAwesome } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
+import { Entypo } from "@expo/vector-icons";
+import friendsService from "../../AppBundle/services/friendsService";
+import AuthContext from "../../AuthBundle/context/AuthContext";
+import sessionService from "../../AppBundle/services/sessionService";
 
-const FriendsList = ({ name, session }) => {
+const FriendsList = ({ name, session, friendCode, id }) => {
+  const { userToken } = useContext(AuthContext);
+
+  const removeFriend = async () => {
+    try {
+      const res = await friendsService.deleteUserFriend(userToken, friendCode);
+
+      console.log(res);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const addMemberToSession = async () => {
+    try {
+      const res = await sessionService.addMemberToSession(userToken, id);
+      ToastAndroid.show(
+        "Friend has been added to your session...",
+        ToastAndroid.SHORT,
+        ToastAndroid.BOTTOM
+      );
+      console.log(res);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const removeMemberFromSession = async () => {
+    try {
+      const res = await sessionService.removeMemberToSession(userToken, id);
+      ToastAndroid.show(
+        "Friend has been removed to your session...",
+        ToastAndroid.SHORT,
+        ToastAndroid.BOTTOM
+      );
+      console.log(res);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  
+  const handleRemoveFromSession = () => {
+    removeMemberFromSession();
+  };
+
+  const handleAddToSession = () => {
+    addMemberToSession();
+  };
+
   return (
     <View style={styles.listContainer}>
-       <View style={styles.profilePictureContainer}>
-          <TouchableOpacity>
-            <FontAwesome name="user-circle" size={60} color="black" />
-          </TouchableOpacity>
-        </View>
+      <View style={styles.profilePictureContainer}>
+        <TouchableOpacity>
+          <FontAwesome name="user-circle" size={60} color="black" />
+        </TouchableOpacity>
+      </View>
       <View>
         <Text style={styles.nameStyle}>{name}</Text>
         <Text style={styles.sessionStyle}>
@@ -28,11 +87,18 @@ const FriendsList = ({ name, session }) => {
         </View>
       ) : (
         <View style={styles.buttonBlock}>
-          <TouchableOpacity style={styles.iconStyle} disabled={true}>
-            <AntDesign name="rightcircle" size={25} color="#bdbdbd" />
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.iconStyle}>
+          <TouchableOpacity
+            style={styles.iconStyle}
+            disabled={false}
+            onPress={handleAddToSession}
+          >
             <AntDesign name="pluscircle" size={25} color="#60B3FF" />
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.iconStyle}
+            onPress={handleRemoveFromSession}
+          >
+            <Entypo name="circle-with-cross" size={25} color="crimson" />
           </TouchableOpacity>
         </View>
       )}
@@ -45,20 +111,20 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     marginBottom: 15,
-    width: "100%"
+    width: "100%",
   },
   buttonBlock: {
     display: "flex",
     flexDirection: "row",
     width: "36%",
-    justifyContent: "flex-end"
+    justifyContent: "flex-end",
   },
   profilePictureContainer: {
     borderRadius: 100,
-    borderColor: 'white',
+    borderColor: "white",
     backgroundColor: "white",
     borderWidth: 3,
-    elevation: 3
+    elevation: 3,
   },
   nameStyle: {
     marginLeft: 20,
@@ -68,11 +134,11 @@ const styles = StyleSheet.create({
   },
   sessionStyle: {
     marginLeft: 20,
-    color: "#535353"
+    color: "#535353",
   },
   iconStyle: {
-    marginLeft: 20,
-    marginRight: 3,
+    marginLeft: 25,
+    marginRight: 0,
     marginTop: 13,
   },
 });

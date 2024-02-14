@@ -17,6 +17,26 @@ const addUserFriend = (token, friendCode) => {
     .catch((err) => console.log(err));
 };
 
+
+//NJ8L4I
+const deleteUserFriend = (token, friendCode) => {
+  return axios
+    .delete(`${BASE_URL}/user/friends/remove`, friendCode, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    })
+    .then((res) => {
+      if (res.data) {
+        return res.data;
+      }
+    })
+    .catch((err) => console.log(err));
+};
+
+//52W73V
+
 const getUserFriends = (token) => {
   return axios
     .get(`${BASE_URL}/user/friends`, {
@@ -51,6 +71,7 @@ const friendsService = {
   getUserFriends,
   addUserFriend,
   getUserCode,
+  deleteUserFriend
 };
 
 export default friendsService;

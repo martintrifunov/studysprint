@@ -26,7 +26,7 @@ const Friends = () => {
     try {
       const res = await friendsService.getUserFriends(userToken);
 
-      const transformedData = res.map(item => ({ name: item.name, session: true }));
+      const transformedData = res.map(item => ({ name: item.name, friendCode: item.friendCode, id: item.id, session: false }));
 
       setFriendsListData(transformedData)
     } catch (error) {

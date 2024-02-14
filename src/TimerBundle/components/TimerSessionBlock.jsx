@@ -1,7 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import { View, StyleSheet, Text } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
+import sessionService from "../../AppBundle/services/sessionService";
+import AuthContext from "../../AuthBundle/context/AuthContext";
+import { useFocusEffect } from "@react-navigation/native";
+import { FontAwesome } from "@expo/vector-icons";
 
 const TimerSessionBlock = ({
   isTimerRunning,
@@ -10,6 +14,8 @@ const TimerSessionBlock = ({
   focusCounter,
   breakCounter,
 }) => {
+  const [sessionMembers, setSessionMembers] = useState([]);
+  const { userToken } = useContext(AuthContext);
   const [blockState, setBlockState] = useState(undefined);
   const [remainingBreaks, setRemainingBreaks] = useState(
     cycleCount - focusCounter + 1
@@ -38,11 +44,27 @@ const TimerSessionBlock = ({
     setRemainingSessions(cycleCount - focusCounter + 1);
     setRemainingBreaks(cycleCount - breakCounter + 1);
   };
+  useFocusEffect(
+    useCallback(() => {
+      getCurrentSessionMembers();
+    }, [])
+  );
 
   useEffect(() => {
     handleStateChange();
+    getCurrentSessionMembers();
   }, [isTimerRunning]);
 
+  const getCurrentSessionMembers = async () => {
+    try {
+      const res = await sessionService.getCurrentPomodoroSession(userToken);
+      setSessionMembers(res.members);
+
+      console.log(res.members);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <View style={styles.blockContainer}>
       {iconState ? (
@@ -61,6 +83,14 @@ const TimerSessionBlock = ({
             style={styles.iconStyle}
           />
         )
+      ) : sessionMembers?.length > 0 ? (
+        <View style={styles.blockBody}>
+          {sessionMembers.map((member, index) => (
+            <View key={index} style={styles.inner}>
+              <FontAwesome key={index} name="user-circle" size={35} color="black" />
+            </View>
+          ))}
+        </View>
       ) : (
         <Ionicons
           name="timer-outline"
@@ -76,6 +106,19 @@ const TimerSessionBlock = ({
 };
 
 const styles = StyleSheet.create({
+  inner: {
+    paddingLeft: 10
+  },
+  blockBody: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "start",
+    alignItems: "start",
+    width: "94%",
+    height: "20%",
+    top: -30,
+    left: 20,
+  },
   blockContainer: {
     backgroundColor: "white",
     width: 240,
@@ -89,7 +132,7 @@ const styles = StyleSheet.create({
   textStyle: {
     fontSize: 13,
     textAlign: "center",
-    color: "#535353"
+    color: "#535353",
   },
   iconStyle: {
     marginBottom: 15,
