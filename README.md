@@ -1,5 +1,35 @@
 # StudySprint
 
+StudySprint is an innovative mobile application whose role is to help your
+productivity using the Pomodoro technique at work. It also enables
+synchronization of work sessions between multiple users in real time.
+
+This is the frontend for the application built in React Native & Expo.
+
+If you'd like to access and read the documentation for the backend you can find it <a href="https://github.com/telechubby/StudySprint-API-Interen">here.</a>
+
+## Features
+
+- State Management with Hooks & Context API
+- Authentication and Authorization system using JWT sent from our backend
+- Custom vanilla CSS UI elements
+- Custom Animations
+- Camera and Flash
+- Vibration motor
+- Toastify reminders
+- Friend System
+- Party System to study/work together
+- Synchronized Pomodoro Clock across all users in the party
+- Stack based routing
+
+## Design Patterns for the Frontend
+
+- Componentization
+- Reusable Components
+- Context Provider
+- Modular Driven Design (every screen is a separate module)
+- Microservices
+
 ## Setup Guide
 
 ### Make sure to install Node.js and npm
