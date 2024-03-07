@@ -1,5 +1,11 @@
 import { View, StyleSheet } from "react-native";
-import React, { useCallback, useContext, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import FriendsAddFriendBottomSheetModal from "./FriendsAddFriendBottomSheetModal";
 import FriendsBlockHeader from "./FriendsBlockHeader";
 import FriendsBlockBody from "./FriendsBlockBody";
@@ -12,6 +18,7 @@ const Friends = () => {
   const [userFriendCode, setUserFriendCode] = useState(null);
   const addFriendBottomSheetModalRef = useRef(null);
   const [friendsListData, setFriendsListData] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const getOwnFriendCode = async (userToken) => {
     try {
@@ -26,18 +33,28 @@ const Friends = () => {
     try {
       const res = await friendsService.getUserFriends(userToken);
 
-      const transformedData = res.map(item => ({ name: item.name, friendCode: item.friendCode, id: item.id, session: false }));
+      const transformedData = res.map((item) => ({
+        name: item.name,
+        friendCode: item.friendCode,
+        id: item.id,
+        session: false,
+      }));
 
-      setFriendsListData(transformedData)
+      setFriendsListData(transformedData);
     } catch (error) {
       console.log(error);
     }
   };
 
+  useEffect(() => {
+    getFriends(userToken);
+    console.log(isLoading)
+  }, [isLoading])
+
   useFocusEffect(
     useCallback(() => {
       getOwnFriendCode(userToken);
-      getFriends(userToken)
+      getFriends(userToken);
     }, [])
   );
 
@@ -47,11 +64,12 @@ const Friends = () => {
         addFriendBottomSheetModalRef={addFriendBottomSheetModalRef}
       />
 
-      <FriendsBlockBody friendsList={friendsListData} />
+      <FriendsBlockBody friendsList={friendsListData} isLoading={isLoading}/>
 
       <FriendsAddFriendBottomSheetModal
         userFriendCode={userFriendCode}
         addFriendBottomSheetModalRef={addFriendBottomSheetModalRef}
+        setIsLoading={setIsLoading}
       />
     </View>
   );

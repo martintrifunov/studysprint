@@ -54,7 +54,6 @@ const FriendsList = ({ name, session, friendCode, id }) => {
     }
   };
 
-  
   const handleRemoveFromSession = () => {
     removeMemberFromSession();
   };
@@ -65,16 +64,18 @@ const FriendsList = ({ name, session, friendCode, id }) => {
 
   return (
     <View style={styles.listContainer}>
-      <View style={styles.profilePictureContainer}>
-        <TouchableOpacity>
-          <FontAwesome name="user-circle" size={60} color="black" />
-        </TouchableOpacity>
-      </View>
-      <View>
-        <Text style={styles.nameStyle}>{name}</Text>
-        <Text style={styles.sessionStyle}>
-          {session ? "In a session..." : "Idlling..."}
-        </Text>
+      <View style={styles.leftBlock}>
+        <View style={styles.profilePictureContainer}>
+          <TouchableOpacity>
+            <FontAwesome name="user-circle" size={60} color="black" />
+          </TouchableOpacity>
+        </View>
+        <View>
+          <Text style={styles.nameStyle}>{name}</Text>
+          <Text style={styles.sessionStyle}>
+            {session ? "In a session..." : "Idlling..."}
+          </Text>
+        </View>
       </View>
       {session === true ? (
         <View style={styles.buttonBlock}>
@@ -95,7 +96,7 @@ const FriendsList = ({ name, session, friendCode, id }) => {
             <AntDesign name="pluscircle" size={25} color="#60B3FF" />
           </TouchableOpacity>
           <TouchableOpacity
-            style={styles.iconStyle}
+            style={styles.iconPlusStyle}
             onPress={handleRemoveFromSession}
           >
             <Entypo name="circle-with-cross" size={25} color="crimson" />
@@ -107,17 +108,23 @@ const FriendsList = ({ name, session, friendCode, id }) => {
 };
 
 const styles = StyleSheet.create({
+  leftBlock: {
+    flexDirection: "row",
+    width: 135
+  },
   listContainer: {
     display: "flex",
     flexDirection: "row",
     marginBottom: 15,
-    width: "100%",
+    width: "100vw",
   },
   buttonBlock: {
     display: "flex",
     flexDirection: "row",
-    width: "36%",
-    justifyContent: "flex-end",
+    width: "20%",
+    justifyContent: "center",
+    marginTop: 13,
+    marginLeft: 80,
   },
   profilePictureContainer: {
     borderRadius: 100,
@@ -128,7 +135,7 @@ const styles = StyleSheet.create({
   },
   nameStyle: {
     marginLeft: 20,
-    marginRight: 30,
+    marginRight: 0,
     fontSize: 17,
     marginTop: 5,
   },
@@ -136,10 +143,8 @@ const styles = StyleSheet.create({
     marginLeft: 20,
     color: "#535353",
   },
-  iconStyle: {
-    marginLeft: 25,
-    marginRight: 0,
-    marginTop: 13,
+  iconPlusStyle: {
+    paddingLeft: 15,
   },
 });
 

@@ -19,6 +19,7 @@ import { useNavigation } from "@react-navigation/native";
 const FriendsAddFriendBottomSheetModal = ({
   userFriendCode,
   addFriendBottomSheetModalRef,
+  setIsLoading,
 }) => {
   const snapPoints = useMemo(() => ["35%"], []);
   const [newFriendCode, setNewFriendCode] = useState(null);
@@ -51,12 +52,18 @@ const FriendsAddFriendBottomSheetModal = ({
     }
   };
 
-  const handleAddFriend = () => {
-    sendFriendRequest();
-    setError(null);
+  const handleAddFriend = async () => {
+    setIsLoading(true);
+    try {
+      await sendFriendRequest();
+      setError(null);
+    } catch (error) {
+      console.log(error);
+    }
     addFriendBottomSheetModalRef.current?.dismiss();
+    setIsLoading(false);
     Keyboard.dismiss();
-    navigateMe()
+    navigation.navigate("Friends");
   };
 
   return (
